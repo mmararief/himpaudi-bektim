@@ -13,6 +13,7 @@ class Berita extends Model
         'judul',
         'slug',
         'konten',
+        'views',
         'thumbnail',
         'user_id',
         'is_published',
@@ -22,6 +23,7 @@ class Berita extends Model
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
+        'views' => 'integer',
     ];
 
     /**
@@ -55,6 +57,19 @@ class Berita extends Model
     public function photos()
     {
         return $this->hasMany(BeritaPhoto::class)->orderBy('order');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(BeritaComment::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Increment views counter
+     */
+    public function incrementViews()
+    {
+        $this->increment('views');
     }
 
     /**

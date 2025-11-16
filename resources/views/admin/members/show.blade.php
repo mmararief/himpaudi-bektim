@@ -112,24 +112,12 @@
                         <h3 class="text-lg font-medium mb-4">Data Lembaga</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <p class="text-sm text-gray-600">NPSN</p>
-                                <p class="font-medium">{{ $user->dataLembaga->npsn }}</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-600">Nama Lembaga</p>
+                                <p class="text-sm text-gray-600">Nama PAUD/TK/KB</p>
                                 <p class="font-medium">{{ $user->dataLembaga->nama_lembaga }}</p>
                             </div>
-                            <div class="md:col-span-2">
-                                <p class="text-sm text-gray-600">Alamat Lembaga</p>
-                                <p class="font-medium">{{ $user->dataLembaga->alamat_lembaga }}</p>
-                            </div>
                             <div>
-                                <p class="text-sm text-gray-600">Kelurahan</p>
-                                <p class="font-medium">{{ $user->dataLembaga->kelurahan }}</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-600">Kecamatan</p>
-                                <p class="font-medium">{{ $user->dataLembaga->kecamatan }}</p>
+                                <p class="text-sm text-gray-600">NPSN</p>
+                                <p class="font-medium">{{ $user->dataLembaga->npsn }}</p>
                             </div>
                         </div>
                     </div>

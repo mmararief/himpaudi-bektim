@@ -66,7 +66,7 @@
                                         {{ $member->dataLembaga->nama_lembaga ?? '-' }}
                                     </p>
                                     <p class="text-xs text-gray-500">
-                                        {{ $member->dataLembaga->kelurahan ?? '-' }}
+                                        NPSN: {{ $member->dataLembaga->npsn ?? '-' }}
                                     </p>
                                 </td>
                                 <td class="px-6 py-4">

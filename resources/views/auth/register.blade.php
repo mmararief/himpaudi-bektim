@@ -2,18 +2,19 @@
     <!-- Header -->
     <div class="mb-8">
         <h2 class="text-3xl font-bold text-gray-800 mb-2">Formulir Pendaftaran</h2>
-        <p class="text-gray-600">Bergabunglah dengan HIMPAUDI Bekasi Timur</p>
+        <p class="text-gray-600">Pendaftaran akses situs komunitas HIMPAUDI Bekasi Timur</p>
         <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
             <div class="flex items-start gap-3">
                 <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                 </svg>
                 <div class="text-sm text-blue-800">
-                    <p class="font-semibold mb-1">Perhatian:</p>
-                    <ul class="space-y-1 text-xs">
-                        <li>• Lengkapi semua data dengan benar dan akurat</li>
-                        <li>• Akun akan diverifikasi oleh admin sebelum diaktifkan</li>
-                        <li>• Field bertanda (*) wajib diisi</li>
+                    <p class="font-semibold mb-1">Informasi Penting:</p>
+                    <ul class="space-y-1 text-xs leading-relaxed">
+                        <li>• Pendaftaran ini <strong>bukan</strong> pendaftaran anggota resmi nasional. Ini hanya untuk akses fitur website (forum & komentar berita).</li>
+                        <li>• Untuk pendaftaran anggota HIMPAUDI resmi silakan kunjungi: <a href="https://himpaudi.org" target="_blank" rel="noopener" class="text-blue-700 underline">himpaudi.org</a></li>
+                        <li>• Lengkapi data dengan benar; admin lokal akan melakukan verifikasi dasar sebelum aktivasi akun.</li>
+                        <li>• Kolom bertanda (*) wajib diisi.</li>
                     </ul>
                 </div>
             </div>
@@ -128,18 +129,6 @@
                 </div>
 
                 <div>
-                    <x-input-label for="jurusan" value="Jurusan" />
-                    <x-text-input id="jurusan" class="block mt-1 w-full" type="text" name="jurusan" :value="old('jurusan')" />
-                    <x-input-error :messages="$errors->get('jurusan')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="gaji" value="Gaji (Rp)" />
-                    <x-text-input id="gaji" class="block mt-1 w-full" type="number" name="gaji" :value="old('gaji')" min="0" />
-                    <x-input-error :messages="$errors->get('gaji')" class="mt-2" />
-                </div>
-
-                <div>
                     <x-input-label for="tmt_kerja" value="TMT Kerja *" />
                     <x-text-input id="tmt_kerja" class="block mt-1 w-full" type="date" name="tmt_kerja" :value="old('tmt_kerja')" required />
                     <x-input-error :messages="$errors->get('tmt_kerja')" class="mt-2" />
@@ -199,40 +188,11 @@
                     <x-input-error :messages="$errors->get('nama_lembaga')" class="mt-2" />
                 </div>
 
-                <div>
-                    <x-input-label for="npsn" value="NPSN *" />
+                <div class="md:col-span-2">
+                    <x-input-label for="npsn" value="NPSN (Nomor Pokok Sekolah Nasional) *" />
                     <x-text-input id="npsn" class="block mt-1 w-full" type="text" name="npsn" :value="old('npsn')" required maxlength="8" />
                     <x-input-error :messages="$errors->get('npsn')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="kelurahan" value="Kelurahan *" />
-                    <select id="kelurahan" name="kelurahan" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                        <option value="">Pilih Kelurahan</option>
-                        <option value="Aren Jaya" {{ old('kelurahan') == 'Aren Jaya' ? 'selected' : '' }}>Aren Jaya</option>
-                        <option value="Bekasi Jaya" {{ old('kelurahan') == 'Bekasi Jaya' ? 'selected' : '' }}>Bekasi Jaya</option>
-                        <option value="Duren Jaya" {{ old('kelurahan') == 'Duren Jaya' ? 'selected' : '' }}>Duren Jaya</option>
-                        <option value="Margahayu" {{ old('kelurahan') == 'Margahayu' ? 'selected' : '' }}>Margahayu</option>
-                    </select>
-                    <x-input-error :messages="$errors->get('kelurahan')" class="mt-2" />
-                </div>
-
-                <div class="md:col-span-2">
-                    <x-input-label for="alamat_lembaga" value="Alamat Lengkap Lembaga *" />
-                    <textarea id="alamat_lembaga" name="alamat_lembaga" rows="3" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>{{ old('alamat_lembaga') }}</textarea>
-                    <x-input-error :messages="$errors->get('alamat_lembaga')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="no_telp_lembaga" value="No. Telepon Lembaga" />
-                    <x-text-input id="no_telp_lembaga" class="block mt-1 w-full" type="text" name="no_telp_lembaga" :value="old('no_telp_lembaga')" maxlength="15" />
-                    <x-input-error :messages="$errors->get('no_telp_lembaga')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="email_lembaga" value="Email Lembaga" />
-                    <x-text-input id="email_lembaga" class="block mt-1 w-full" type="email" name="email_lembaga" :value="old('email_lembaga')" />
-                    <x-input-error :messages="$errors->get('email_lembaga')" class="mt-2" />
+                    <p class="text-xs text-gray-500 mt-1">NPSN dapat sama untuk anggota dari lembaga yang sama</p>
                 </div>
             </div>
         </div>
@@ -245,23 +205,23 @@
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                 </svg>
                 <div>
-                    <p class="font-bold text-amber-900 mb-2">Proses Setelah Pendaftaran:</p>
+                    <p class="font-bold text-amber-900 mb-2">Proses Setelah Pendaftaran (Akses Situs):</p>
                     <ul class="text-sm text-amber-800 space-y-1.5">
                         <li class="flex items-start gap-2">
                             <span class="text-amber-600 font-bold">1.</span>
-                            <span>Akun Anda akan berstatus <strong>Pending</strong> setelah pendaftaran</span>
+                            <span>Akun Anda akan berstatus <strong>Pending</strong> sementara menunggu verifikasi admin lokal</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <span class="text-amber-600 font-bold">2.</span>
-                            <span>Admin akan melakukan <strong>verifikasi data</strong> yang Anda kirimkan</span>
+                            <span>Admin lokal melakukan <strong>verifikasi data dasar</strong> (bukan validasi keanggotaan resmi)</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <span class="text-amber-600 font-bold">3.</span>
-                            <span>Anda akan menerima <strong>notifikasi email</strong> jika akun disetujui</span>
+                            <span>Anda menerima <strong>email notifikasi</strong> jika akses situs diaktifkan</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <span class="text-amber-600 font-bold">4.</span>
-                            <span>Setelah disetujui, Anda dapat <strong>login dan mengakses dashboard</strong></span>
+                            <span>Setelah diaktifkan, Anda dapat <strong>login untuk posting di forum & komentar berita</strong></span>
                         </li>
                     </ul>
                 </div>

@@ -73,18 +73,6 @@
             </div>
 
             <div>
-                <x-input-label for="jurusan" value="Jurusan" />
-                <x-text-input id="jurusan" name="jurusan" type="text" class="mt-1 block w-full" :value="old('jurusan', $dataPribadi->jurusan)" />
-                <x-input-error class="mt-2" :messages="$errors->get('jurusan')" />
-            </div>
-
-            <div>
-                <x-input-label for="gaji" value="Gaji (Rp)" />
-                <x-text-input id="gaji" name="gaji" type="number" min="0" class="mt-1 block w-full" :value="old('gaji', $dataPribadi->gaji)" />
-                <x-input-error class="mt-2" :messages="$errors->get('gaji')" />
-            </div>
-
-            <div>
                 <x-input-label for="tmt_kerja" value="TMT Kerja" />
                 <x-text-input id="tmt_kerja" name="tmt_kerja" type="date" class="mt-1 block w-full" :value="old('tmt_kerja', optional($dataPribadi->tmt_kerja)->format('Y-m-d'))" required />
                 <x-input-error class="mt-2" :messages="$errors->get('tmt_kerja')" />

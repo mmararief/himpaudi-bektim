@@ -42,7 +42,7 @@ class ProfileController extends Controller
     public function showLembaga(Request $request): View
     {
         $user = $request->user();
-        $user->loadMissing(['dataPribadi', 'dataLembaga']);
+        $user->loadMissing(['dataPribadi', 'dataLembaga', 'dataLembaga.lembagaMaster']);
 
         // Provide defaults if relations don't exist
         $dataPribadi = $user->dataPribadi ?? new \App\Models\DataPribadi([
@@ -54,10 +54,21 @@ class ProfileController extends Controller
             'kecamatan' => 'Bekasi Timur',
         ]);
 
+        // Attempt to locate LembagaMaster record either via explicit relation or by matching NPSN
+        $lembagaMaster = null;
+        if ($user->dataLembaga) {
+            if ($user->dataLembaga->lembagaMaster) {
+                $lembagaMaster = $user->dataLembaga->lembagaMaster;
+            } elseif ($user->dataLembaga->npsn) {
+                $lembagaMaster = \App\Models\LembagaMaster::where('npsn', $user->dataLembaga->npsn)->first();
+            }
+        }
+
         return view('profile.lembaga', [
             'user' => $user,
             'dataPribadi' => $dataPribadi,
             'dataLembaga' => $dataLembaga,
+            'lembagaMaster' => $lembagaMaster,
         ]);
     }
 

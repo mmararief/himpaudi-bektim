@@ -302,6 +302,272 @@ erDiagram
     }
 ```
 
+### UML Class Diagram
+
+```mermaid
+classDiagram
+    class User {
+        +int id
+        +string username
+        +string email
+        +string password
+        +enum role
+        +enum status
+        +timestamps
+        +dataPribadi()
+        +dataLembaga()
+        +berita()
+        +forum()
+    }
+
+    class DataPribadi {
+        +int id
+        +int user_id
+        +string nama_lengkap
+        +string niptk_nuptk
+        +string no_ktp
+        +string tempat_lahir
+        +date tanggal_lahir
+        +enum jenis_kelamin
+        +string pendidikan_terakhir
+        +string no_hp
+        +string foto_profil
+        +timestamps
+        +user()
+    }
+
+    class DataLembaga {
+        +int id
+        +int user_id
+        +string nama_lembaga
+        +string npsn
+        +string alamat_lembaga
+        +enum kelurahan
+        +string kecamatan
+        +string no_telp_lembaga
+        +string email_lembaga
+        +timestamps
+        +user()
+    }
+
+    class Berita {
+        +int id
+        +int user_id
+        +string judul
+        +string slug
+        +longtext konten
+        +string thumbnail
+        +boolean is_published
+        +datetime published_at
+        +timestamps
+        +user()
+        +photos()
+    }
+
+    class BeritaPhoto {
+        +int id
+        +int berita_id
+        +string photo_path
+        +string caption
+        +int order
+        +timestamps
+        +berita()
+    }
+
+    class Galeri {
+        +int id
+        +string judul_kegiatan
+        +string deskripsi
+        +string file_gambar
+        +date tanggal_kegiatan
+        +timestamps
+    }
+
+    class Forum {
+        +int id
+        +int user_id
+        +string judul
+        +string slug
+        +text konten
+        +int views
+        +timestamps
+        +user()
+    }
+
+    class VisiMisi {
+        +int id
+        +text visi
+        +text misi
+        +timestamps
+    }
+
+    class FAQ {
+        +int id
+        +string pertanyaan
+        +text jawaban
+        +int urutan
+        +timestamps
+    }
+
+    class ContactInfo {
+        +int id
+        +string alamat
+        +string telepon
+        +string email
+        +string whatsapp
+        +timestamps
+    }
+
+    User "1" --> "1" DataPribadi
+    User "1" --> "1" DataLembaga
+    User "1" --> "*" Berita
+    User "1" --> "*" Forum
+    Berita "1" --> "*" BeritaPhoto
+```
+
+### UML Use Case Diagram
+
+```mermaid
+flowchart TB
+    subgraph "HIMPAUDI System"
+        UC1[Registrasi Member]
+        UC2[Login]
+        UC3[Lihat Berita]
+        UC4[Lihat Galeri]
+        UC5[Lihat Forum]
+        UC6[Lihat Struktur Organisasi]
+        UC7[Edit Profil]
+        UC8[Edit Data Lembaga]
+        UC9[Buat Topik Forum]
+        UC10[Verifikasi Member]
+        UC11[Kelola Berita]
+        UC12[Kelola Galeri]
+        UC13[Kelola Forum]
+        UC14[Kelola Visi Misi]
+        UC15[Kelola FAQ]
+        UC16[Kelola Info Kontak]
+    end
+
+    Guest((Guest User))
+    Member((Member))
+    Admin((Admin))
+
+    Guest --> UC1
+    Guest --> UC2
+    Guest --> UC3
+    Guest --> UC4
+    Guest --> UC5
+    Guest --> UC6
+
+    Member --> UC2
+    Member --> UC3
+    Member --> UC4
+    Member --> UC5
+    Member --> UC6
+    Member --> UC7
+    Member --> UC8
+    Member --> UC9
+
+    Admin --> UC2
+    Admin --> UC10
+    Admin --> UC11
+    Admin --> UC12
+    Admin --> UC13
+    Admin --> UC14
+    Admin --> UC15
+    Admin --> UC16
+```
+
+### UML Activity Diagram - Proses Verifikasi Member
+
+```mermaid
+flowchart TD
+    Start([Start: Member Registrasi]) --> InputData[Member Input Data Registrasi]
+    InputData --> ValidasiInput{Validasi Input}
+    ValidasiInput -->|Invalid| ShowError[Tampilkan Error Message]
+    ShowError --> InputData
+    ValidasiInput -->|Valid| SimpanData[Simpan Data ke Database]
+    SimpanData --> SetPending[Set Status Member = Pending]
+    SetPending --> Notif1[Tampilkan Notifikasi Success]
+    Notif1 --> WaitAdmin[Menunggu Verifikasi Admin]
+
+    WaitAdmin --> AdminLogin[Admin Login ke Dashboard]
+    AdminLogin --> LihatList[Admin Lihat List Pending Member]
+    LihatList --> ReviewData[Admin Review Data Member]
+    ReviewData --> Decision{Keputusan Admin}
+
+    Decision -->|Approve| UpdateActive[Update Status = Active]
+    UpdateActive --> SendApprove[Kirim Email Approval]
+    SendApprove --> LogApprove[Log Activity Approval]
+    LogApprove --> NotifAdmin1[Tampilkan Success ke Admin]
+    NotifAdmin1 --> MemberActive[Member Dapat Login]
+    MemberActive --> End1([End: Member Aktif])
+
+    Decision -->|Reject| UpdateReject[Update Status = Rejected]
+    UpdateReject --> SendReject[Kirim Email Rejection]
+    SendReject --> LogReject[Log Activity Rejection]
+    LogReject --> NotifAdmin2[Tampilkan Success ke Admin]
+    NotifAdmin2 --> MemberReject[Member Tidak Dapat Login]
+    MemberReject --> End2([End: Member Ditolak])
+```
+
+### UML Activity Diagram - Kelola Berita dengan Multiple Photos
+
+```mermaid
+flowchart TD
+    Start([Start: Admin Kelola Berita]) --> MenuAction{Pilih Aksi}
+
+    MenuAction -->|Create| FormCreate[Buka Form Tambah Berita]
+    FormCreate --> InputBerita[Input Judul, Konten, Thumbnail]
+    InputBerita --> UploadPhotos[Upload Multiple Photos]
+    UploadPhotos --> SetPublish{Set Published?}
+    SetPublish -->|Yes| SetDate[Set Published Date]
+    SetPublish -->|No| Draft1[Save as Draft]
+    SetDate --> ValidateCreate{Validasi Data}
+    Draft1 --> ValidateCreate
+    ValidateCreate -->|Invalid| ErrorCreate[Tampilkan Error]
+    ErrorCreate --> FormCreate
+    ValidateCreate -->|Valid| SaveBerita[Simpan Berita ke Database]
+    SaveBerita --> LoopPhotos[Loop Through Photos]
+    LoopPhotos --> SavePhoto[Simpan Photo ke berita_photos]
+    SavePhoto --> CheckMore{Masih Ada Photo?}
+    CheckMore -->|Yes| LoopPhotos
+    CheckMore -->|No| SuccessCreate[Tampilkan Success Message]
+    SuccessCreate --> EndCreate([End])
+
+    MenuAction -->|Edit| SelectBerita[Pilih Berita untuk Edit]
+    SelectBerita --> LoadData[Load Data Berita & Photos]
+    LoadData --> FormEdit[Tampilkan Form Edit]
+    FormEdit --> UpdateData[Update Judul, Konten, Thumbnail]
+    UpdateData --> DeletePhotos{Hapus Photo Lama?}
+    DeletePhotos -->|Yes| LoopDelete[Loop Photo untuk Dihapus]
+    LoopDelete --> DeleteFile[Hapus File dari Storage]
+    DeleteFile --> DeleteDB[Hapus Record dari DB]
+    DeleteDB --> CheckMoreDelete{Masih Ada yang Dihapus?}
+    CheckMoreDelete -->|Yes| LoopDelete
+    CheckMoreDelete -->|No| AddNew{Tambah Photo Baru?}
+    DeletePhotos -->|No| AddNew
+    AddNew -->|Yes| UploadNew[Upload Photo Baru]
+    UploadNew --> SaveNew[Simpan Photo Baru]
+    SaveNew --> ValidateEdit{Validasi Data}
+    AddNew -->|No| ValidateEdit
+    ValidateEdit -->|Invalid| ErrorEdit[Tampilkan Error]
+    ErrorEdit --> FormEdit
+    ValidateEdit -->|Valid| UpdateBerita[Update Data Berita]
+    UpdateBerita --> SuccessEdit[Tampilkan Success Message]
+    SuccessEdit --> EndEdit([End])
+
+    MenuAction -->|Delete| SelectDelete[Pilih Berita untuk Hapus]
+    SelectDelete --> Confirm{Konfirmasi Hapus?}
+    Confirm -->|No| EndCancel([End: Dibatalkan])
+    Confirm -->|Yes| GetPhotos[Ambil Semua Photos Berita]
+    GetPhotos --> DeleteAllFiles[Hapus Semua File Photos]
+    DeleteAllFiles --> DeleteBerita[Hapus Record Berita]
+    DeleteBerita --> CascadeDelete[Cascade Delete berita_photos]
+    CascadeDelete --> SuccessDelete[Tampilkan Success Message]
+    SuccessDelete --> EndDelete([End])
+```
+
 ## 📋 Persyaratan Sistem
 
 -   PHP >= 8.2

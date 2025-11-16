@@ -115,7 +115,7 @@
         <div class="mb-8">
             <div class="flex justify-between items-start">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900">Dashboard Anggota</h2>
+                    <h2 class="text-2xl font-bold text-gray-900">Dashboard Akun Situs</h2>
                     <p class="text-gray-600 mt-1">Selamat datang, <span class="font-semibold">{{ $dataPribadi->nama_lengkap ?? $user->username }}</span></p>
                 </div>
                 <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 transition-colors">
@@ -134,10 +134,11 @@
                     
                     <div class="flex justify-between items-start mb-6 relative z-10">
                         <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-xl shadow-md" style="color: #1e3a8a;">H</div>
+                            <img  src="{{ asset('images/logo-himpaudi.png') }}" alt="Logo HIMPAUDI" class="w-12 h-12">
+                            
                             <div>
                                 <h3 class="font-bold text-lg tracking-wide" style="color: #ffffff;">HIMPAUDI</h3>
-                                <p class="text-xs uppercase tracking-wider font-medium" style="color: rgba(255, 255, 255, 0.9);">Kartu Tanda Anggota Digital</p>
+                                <p class="text-xs uppercase tracking-wider font-medium" style="color: rgba(255, 255, 255, 0.9);">Kartu Akses Akun Lokal</p>
                             </div>
                         </div>
                         @if($user->status === 'active')
@@ -183,7 +184,7 @@
                     </div>
                     
                     <div class="mt-6 pt-4 flex justify-between items-center relative z-10" style="border-top: 1px solid rgba(255, 255, 255, 0.2);">
-                        <p class="text-xs italic" style="color: rgba(255, 255, 255, 0.85);">Berlaku selama menjadi anggota aktif Himpaudi.</p>
+                        <p class="text-xs italic" style="color: rgba(255, 255, 255, 0.85);">Untuk keanggotaan resmi nasional silakan kunjungi himpaudi.org.</p>
                         <p class="text-xs font-mono" style="color: #ffffff;">ID: HMP-{{ str_pad($user->id, 5, '0', STR_PAD_LEFT) }}</p>
                     </div>
                 </div>
@@ -219,7 +220,7 @@
                     </div>
                 @endif
 
-                <!-- Info Terbaru Section -->
+                <!-- Info Terbaru Section (Dynamic from Berita) -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
                         <h3 class="font-bold text-gray-900 flex items-center gap-2">
@@ -228,33 +229,37 @@
                         </h3>
                     </div>
                     <div class="p-6">
-                        <div class="space-y-4">
-                            <a href="#" class="block group">
-                                <div class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden">
-                                        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600"></div>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <h4 class="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition line-clamp-2">Undangan Workshop Kurikulum Merdeka PAUD</h4>
-                                        <p class="text-xs text-gray-500 mt-1">12 Januari 2024 • Administrator</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <hr class="border-gray-200">
-                            <a href="#" class="block group">
-                                <div class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden">
-                                        <div class="w-full h-full bg-gradient-to-br from-green-400 to-green-600"></div>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <h4 class="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition line-clamp-2">Jadwal Pertemuan Rutin Bulan Februari</h4>
-                                        <p class="text-xs text-gray-500 mt-1">08 Januari 2024 • Administrator</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                        @if(isset($latestBerita) && $latestBerita->count() > 0)
+                            <div class="space-y-4">
+                                @foreach($latestBerita as $item)
+                                    <a href="{{ route('berita.show', $item->slug) }}" class="block group">
+                                        <div class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                            <div class="w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden bg-gray-200">
+                                                @if($item->thumbnail)
+                                                    <img src="{{ asset('storage/'.$item->thumbnail) }}" alt="{{ $item->judul }}" class="w-full h-full object-cover">
+                                                @else
+                                                    <div class="w-full h-full bg-gradient-to-br from-blue-400 to-indigo-600"></div>
+                                                @endif
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <h4 class="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition line-clamp-2">{{ $item->judul }}</h4>
+                                                <p class="text-xs text-gray-500 mt-1">{{ optional($item->published_at)->format('d M Y') }} • {{ $item->user->name ?? $item->user->username ?? 'Admin' }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    @if(!$loop->last)
+                                        <hr class="border-gray-200">
+                                    @endif
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="py-10 text-center text-sm text-gray-500">
+                                <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                                Belum ada berita dipublikasikan
+                            </div>
+                        @endif
                         <div class="mt-4 pt-4 border-t border-gray-200">
-                            <a href="#" class="block text-center text-sm text-blue-600 font-medium hover:text-blue-700 transition-colors">Lihat Semua Informasi →</a>
+                            <a href="{{ route('berita.index') }}" class="block text-center text-sm text-blue-600 font-medium hover:text-blue-700 transition-colors">Lihat Semua Berita →</a>
                         </div>
                     </div>
                 </div>
@@ -262,32 +267,7 @@
 
             <!-- Sidebar (right 1/3) -->
             <div class="space-y-6">
-                <!-- Profile Completion Widget -->
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="px-5 py-4 border-b border-gray-200 bg-gray-50">
-                        <h4 class="text-sm font-bold text-gray-900">Kelengkapan Data Profil</h4>
-                    </div>
-                    <div class="p-5">
-                        @php
-                            $completeness = 0;
-                            if($dataPribadi) {
-                                $fields = ['nama_lengkap', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'no_hp', 'pendidikan_terakhir', 'alamat_domisili'];
-                                $filled = collect($fields)->filter(fn($f) => !empty($dataPribadi->$f))->count();
-                                $completeness = round(($filled / count($fields)) * 100);
-                            }
-                        @endphp
-                        <div class="flex mb-3 items-center justify-between">
-                            <span class="text-xs font-semibold px-2.5 py-1 rounded-lg text-blue-700 bg-blue-100 border border-blue-200">{{ $completeness }}%</span>
-                            <span class="text-xs font-semibold text-gray-600">{{ $completeness >= 80 ? 'Hampir Lengkap' : 'Perlu Dilengkapi' }}</span>
-                        </div>
-                        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-100">
-                            <div style="width:{{ $completeness }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
-                        </div>
-                        @if($completeness < 100)
-                            <p class="text-xs text-gray-500">Data Anda belum lengkap. <a href="{{ route('profile.edit') }}" class="text-blue-600 hover:underline">Update Sekarang</a></p>
-                        @endif
-                    </div>
-                </div>
+                <!-- Profile Completion Widget removed per request -->
 
                 <!-- Hot Discussions Widget -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">

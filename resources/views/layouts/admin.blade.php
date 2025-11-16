@@ -81,6 +81,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.lembaga-master.index') }}" 
+                           class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ request()->routeIs('admin.lembaga-master.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/>
+                            </svg>
+                            Lembaga Master
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.users.index') }}" 
                            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ request()->routeIs('admin.users.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

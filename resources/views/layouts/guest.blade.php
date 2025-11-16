@@ -51,7 +51,7 @@
                         HIMPAUDI Bekasi Timur
                     </h2>
                     <p class="text-blue-100 text-lg mb-8">
-                        Platform digital untuk pengelolaan keanggotaan dan informasi Himpunan Pendidik dan Tenaga Kependidikan Anak Usia Dini
+                        Platform digital komunitas lokal Bekasi Timur (forum & berita). Bukan portal pendaftaran resmi nasional.
                     </p>
                     
                     <div class="space-y-4">
@@ -63,7 +63,7 @@
                             </div>
                             <div>
                                 <h3 class="font-semibold mb-1">Pendaftaran Online</h3>
-                                <p class="text-blue-100 text-sm">Daftar sebagai anggota dengan mudah dan cepat</p>
+                                <p class="text-blue-100 text-sm">Daftar akun lokal untuk ikut forum & komentar</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
@@ -74,7 +74,7 @@
                             </div>
                             <div>
                                 <h3 class="font-semibold mb-1">Verifikasi Otomatis</h3>
-                                <p class="text-blue-100 text-sm">Status keanggotaan diverifikasi oleh admin</p>
+                                <p class="text-blue-100 text-sm">Akses akun diverifikasi oleh admin lokal</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">

@@ -72,15 +72,15 @@
                                         {{ $member->dataLembaga->nama_lembaga ?? '-' }}
                                     </p>
                                     <p class="text-xs text-gray-500">
-                                        {{ $member->dataLembaga->kelurahan ?? '-' }}
+                                        NPSN: {{ $member->dataLembaga->npsn ?? '-' }}
                                     </p>
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="text-xs text-gray-500 block">
-                                        Gaji: Rp {{ $member->dataPribadi ? number_format($member->dataPribadi->gaji, 0, ',', '.') : '0' }}
+                                        Email: {{ $member->email }}
                                     </span>
                                     <span class="text-xs text-gray-500 block">
-                                        Diklat: {{ $member->dataPribadi->diklat_tertinggi ?? 'Belum Ada' }}
+                                        HP: {{ $member->dataPribadi->no_hp ?? '-' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">

@@ -44,8 +44,6 @@ class RegisteredUserController extends Controller
             'tanggal_lahir' => ['required', 'date'],
             'jenis_kelamin' => ['required', 'in:Laki-laki,Perempuan'],
             'pendidikan_terakhir' => ['required', 'string', 'max:50'],
-            'jurusan' => ['nullable', 'string', 'max:100'],
-            'gaji' => ['nullable', 'numeric', 'min:0'],
             'tmt_kerja' => ['required', 'date'],
             'riwayat_diklat' => ['nullable', 'array'],
             'alamat_domisili' => ['required', 'string'],
@@ -54,11 +52,7 @@ class RegisteredUserController extends Controller
 
             // Data Lembaga
             'nama_lembaga' => ['required', 'string', 'max:255'],
-            'npsn' => ['required', 'string', 'max:8', 'unique:data_lembaga'],
-            'alamat_lembaga' => ['required', 'string'],
-            'kelurahan' => ['required', 'in:Aren Jaya,Bekasi Jaya,Duren Jaya,Margahayu'],
-            'no_telp_lembaga' => ['nullable', 'string', 'max:15'],
-            'email_lembaga' => ['nullable', 'email', 'max:255'],
+            'npsn' => ['required', 'string', 'max:8'],
         ]);
 
         // Create User Account
@@ -80,13 +74,12 @@ class RegisteredUserController extends Controller
         $user->dataPribadi()->create([
             'nama_lengkap' => $validated['nama_lengkap'],
             'niptk_nuptk' => $validated['niptk_nuptk'],
+            'no_kta_lama' => $validated['no_kta_lama'] ?? null,
             'no_ktp' => $validated['no_ktp'],
             'tempat_lahir' => $validated['tempat_lahir'],
             'tanggal_lahir' => $validated['tanggal_lahir'],
             'jenis_kelamin' => $validated['jenis_kelamin'],
             'pendidikan_terakhir' => $validated['pendidikan_terakhir'],
-            'jurusan' => $validated['jurusan'],
-            'gaji' => $validated['gaji'],
             'tmt_kerja' => $validated['tmt_kerja'],
             'riwayat_diklat' => $validated['riwayat_diklat'] ?? [],
             'alamat_domisili' => $validated['alamat_domisili'],
@@ -100,13 +93,10 @@ class RegisteredUserController extends Controller
             $fotoSekolahPath = $request->file('foto_sekolah')->store('sekolah', 'public');
         }
 
-        // Create Data Lembaga (original fields only)
+        // Create Data Lembaga
         $user->dataLembaga()->create([
             'nama_lembaga' => $validated['nama_lembaga'],
             'npsn' => $validated['npsn'],
-            'alamat_lembaga' => $validated['alamat_lembaga'],
-            'kelurahan' => $validated['kelurahan'],
-            'kecamatan' => 'Bekasi Timur',
         ]);
 
         event(new Registered($user));

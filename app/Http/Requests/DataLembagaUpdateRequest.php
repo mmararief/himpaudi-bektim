@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\DataLembaga;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,12 +33,6 @@ class DataLembagaUpdateRequest extends FormRequest
                 'max:8',
             ],
             'nama_lembaga' => ['required', 'string', 'max:255'],
-            'alamat_lembaga' => ['required', 'string'],
-            'kelurahan' => ['required', Rule::in(DataLembaga::getKelurahanOptions())],
-            'kecamatan' => ['nullable', 'string', 'max:255'],
-            'kota' => ['nullable', 'string', 'max:255'],
-            'no_telp_lembaga' => ['nullable', 'string', 'max:15'],
-            'email_lembaga' => ['nullable', 'email', 'max:255'],
         ];
     }
 }

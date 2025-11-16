@@ -62,8 +62,8 @@
                     <div class="text-gray-600 font-medium">Galeri Foto</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-blue-800 mb-2">15+</div>
-                    <div class="text-gray-600 font-medium">Kelurahan</div>
+                    <div class="text-4xl font-bold text-blue-800 mb-2">{{ \App\Models\Berita::count() }}+</div>
+                    <div class="text-gray-600 font-medium">Kegiatan</div>
                 </div>
             </div>
         </div>

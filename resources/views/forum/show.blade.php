@@ -107,7 +107,9 @@
                                     </div>
                                 @endif
                                 <div>
-                                    <p class="text-sm font-bold text-gray-900">{{ $dataPribadi->nama_lengkap ?? $topik->user->username ?? 'Unknown' }}</p>
+                                    <a href="{{ route('public.profile.show', $topik->user) }}" class="text-sm font-bold text-gray-900 hover:text-blue-600 transition block">
+                                        {{ $dataPribadi->nama_lengkap ?? $topik->user->username ?? 'Unknown' }}
+                                    </a>
                                     @if($topik->user->role === 'admin')
                                         <span class="inline-block mt-1 px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded">Administrator</span>
                                     @else
@@ -190,7 +192,9 @@
                                 <div class="flex items-start justify-between gap-4 mb-3">
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <p class="font-bold text-gray-900 text-sm">{{ $balasanPribadi->nama_lengkap ?? $balasan->user->username ?? 'Unknown' }}</p>
+                                            <a href="{{ route('public.profile.show', $balasan->user) }}" class="font-bold text-gray-900 hover:text-blue-600 transition text-sm">
+                                                {{ $balasanPribadi->nama_lengkap ?? $balasan->user->username ?? 'Unknown' }}
+                                            </a>
                                             @if($balasan->user->role === 'admin')
                                                 <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded">Admin</span>
                                             @endif

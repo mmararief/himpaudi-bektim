@@ -51,9 +51,17 @@
                             </div>
                         </div>
 
+
+
                         <!-- Right Side -->
                         <div class="flex items-center space-x-4">
                             @auth
+                                <a href="{{ route('public.search') }}" class="md:hidden inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 18a8 8 0 110-16 8 8 0 010 16z" />
+                                    </svg>
+                                    Cari
+                                </a>
                                 <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -61,6 +69,13 @@
                                     Dashboard
                                 </a>
                             @else
+                                <a href="{{ route('public.search') }}" class="md:hidden inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10 18a8 8 0 110-16 8 8 0 010 16z" />
+                                    </svg>
+                                    Cari
+                                </a>
+
                                 <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition">
                                     Login
                                 </a>
@@ -97,7 +112,8 @@
                         <div>
                             <h3 class="text-white font-bold mb-4">Menu Cepat</h3>
                             <ul class="space-y-2 text-sm">
-                                <li><a href="{{ route('register') }}" class="hover:text-blue-400 transition">Daftar Anggota</a></li>
+                                <li><a href="{{ route('register') }}" class="hover:text-blue-400 transition">Daftar Akun Situs</a></li>
+                                <li><a href="{{ route('anggota.himpaudi') }}" target="_blank" rel="noopener" class="hover:text-blue-400 transition">Anggota Resmi HIMPAUDI</a></li>
                                 <li><a href="{{ route('login') }}" class="hover:text-blue-400 transition">Login</a></li>
                                 <li><a href="{{ route('galeri.index') }}" class="hover:text-blue-400 transition">Galeri</a></li>
                                 <li><a href="{{ route('forum.index') }}" class="hover:text-blue-400 transition">Forum</a></li>

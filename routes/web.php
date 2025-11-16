@@ -3,13 +3,26 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PublicSiteController;
+// Redirect ke situs resmi HIMPAUDI nasional
+Route::get('/anggota-himpaudi', function () {
+    return redirect()->away('https://himpaudi.org');
+})->name('anggota.himpaudi');
+
+// Publik: Pencarian dan detail lembaga
+Route::get('/cari', [PublicSiteController::class, 'search'])->name('public.search');
+Route::get('/lembaga/{lembaga_master}', [PublicSiteController::class, 'lembaga'])->name('public.lembaga.show');
+Route::get('/lembaga/npsn/{npsn}', [PublicSiteController::class, 'lembagaByNpsn'])->name('public.lembaga.npsn');
+Route::get('/profil/{user}', [PublicSiteController::class, 'profile'])->name('public.profile.show');
+
 use App\Http\Controllers\BeritaController as PublicBeritaController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/struktur-organisasi', [HomeController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $latestBerita = \App\Models\Berita::published()->latest()->take(5)->with('user')->get();
+    return view('dashboard', compact('latestBerita'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -33,6 +46,7 @@ Route::get('/galeri/{galeri}', [GaleriController::class, 'show'])->name('galeri.
 // Berita Routes (Public)
 Route::get('/berita', [PublicBeritaController::class, 'index'])->name('berita.index');
 Route::get('/berita/{slug}', [PublicBeritaController::class, 'show'])->name('berita.show');
+Route::post('/berita/{slug}/comment', [PublicBeritaController::class, 'storeComment'])->middleware('auth')->name('berita.comment.store');
 
 // Forum Routes
 use App\Http\Controllers\ForumController;
@@ -65,6 +79,7 @@ use App\Http\Controllers\Admin\ForumController as AdminForumController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ContactInfoController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
+use App\Http\Controllers\Admin\LembagaMasterController;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // User Management
@@ -90,6 +105,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('berita', AdminBeritaController::class)->parameters([
         'berita' => 'beritum' // avoid conflict with Indonesian pluralization
     ]);
+
+    // Lembaga Master Management
+    Route::resource('lembaga-master', LembagaMasterController::class)->except(['show']);
+    Route::get('/lembaga-master-import', [LembagaMasterController::class, 'import'])->name('lembaga-master.import');
+    Route::post('/lembaga-master-import', [LembagaMasterController::class, 'processImport'])->name('lembaga-master.import.process');
 
     // Visi Misi Management
     Route::resource('visi-misi', VisiMisiController::class);

@@ -44,8 +44,6 @@ class DataPribadiUpdateRequest extends FormRequest
             'tanggal_lahir' => ['required', 'date'],
             'jenis_kelamin' => ['required', 'in:Laki-laki,Perempuan'],
             'pendidikan_terakhir' => ['required', 'string', 'max:50'],
-            'jurusan' => ['nullable', 'string', 'max:100'],
-            'gaji' => ['nullable', 'numeric', 'min:0'],
             'tmt_kerja' => ['required', 'date'],
             'riwayat_diklat' => ['nullable', 'array'],
             'alamat_domisili' => ['required', 'string'],

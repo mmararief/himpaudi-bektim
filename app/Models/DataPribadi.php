@@ -18,8 +18,6 @@ class DataPribadi extends Model
         'tanggal_lahir',
         'jenis_kelamin',
         'pendidikan_terakhir',
-        'jurusan',
-        'gaji',
         'tmt_kerja',
         'riwayat_diklat',
         'alamat_domisili',
@@ -31,7 +29,6 @@ class DataPribadi extends Model
         'tanggal_lahir' => 'date',
         'tmt_kerja' => 'date',
         'riwayat_diklat' => 'array',
-        'gaji' => 'decimal:2',
     ];
 
     /**

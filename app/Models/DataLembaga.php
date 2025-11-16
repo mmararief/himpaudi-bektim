@@ -12,12 +12,6 @@ class DataLembaga extends Model
         'user_id',
         'npsn',
         'nama_lembaga',
-        'alamat_lembaga',
-        'kelurahan',
-        'kecamatan',
-        'kota',
-        'no_telp_lembaga',
-        'email_lembaga',
         'lembaga_master_id',
     ];
 
@@ -32,18 +26,5 @@ class DataLembaga extends Model
     public function lembagaMaster()
     {
         return $this->belongsTo(LembagaMaster::class, 'lembaga_master_id');
-    }
-
-    /**
-     * Get kelurahan options
-     */
-    public static function getKelurahanOptions()
-    {
-        return [
-            'Aren Jaya',
-            'Bekasi Jaya',
-            'Duren Jaya',
-            'Margahayu',
-        ];
     }
 }

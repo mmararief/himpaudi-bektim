@@ -1,12 +1,16 @@
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
-        </p>
+    <header class="mb-4">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-lg font-bold text-gray-900">Akun & Kontak</h2>
+                <p class="text-sm text-gray-600">Perbarui username dan alamat email akun Anda</p>
+            </div>
+        </div>
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -48,7 +52,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-primary-button class="px-5 py-2.5">Simpan</x-primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p
@@ -57,7 +61,7 @@
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                >Tersimpan.</p>
             @endif
         </div>
     </form>

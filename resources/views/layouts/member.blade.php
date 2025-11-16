@@ -53,7 +53,7 @@
         <div class="px-6 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-900 font-bold shadow-md">H</div>
+                       <img src="{{ asset('images/logo-himpaudi.png') }}" alt="Logo HIMPAUDI" class="h-10 w-auto">
                     <div>
                         <h1 class="text-white font-semibold text-lg leading-tight">HIMPAUDI</h1>
                         <p class="text-blue-200 text-xs">Anggota - Bekasi Timur</p>
