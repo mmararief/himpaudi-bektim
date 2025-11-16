@@ -15,6 +15,293 @@ Platform digital terpadu untuk Himpunan Pendidik dan Tenaga Kependidikan Anak Us
 -   **Email Notification**: Notifikasi otomatis untuk approval/rejection member
 -   **Multi-role**: Admin dan Member dengan dashboard terpisah
 
+## 📊 Rancangan Komponen
+
+### Flowchart Interaksi User
+
+```mermaid
+flowchart TD
+    Start([Start]) --> ReadWebsite[Baca Website/RT]
+    ReadWebsite --> MenuChoice{Pilih Menu}
+
+    MenuChoice -->|Berita| Berita[Pilih Berita]
+    Berita --> EndBerita([End])
+
+    MenuChoice -->|Login| Login[Login]
+    Login --> ValidLogin{Validasi Login?}
+    ValidLogin -->|Ya| Dashboard[Akses Dashboard]
+    Dashboard --> EndDashboard([End])
+    ValidLogin -->|Tidak| Login
+```
+
+### Flowchart Registrasi Member
+
+```mermaid
+flowchart TD
+    Start2([Start]) --> BukaWeb[Buka Website HIMPAUDI]
+    BukaWeb --> KlikRegister[Klik Menu Register]
+    KlikRegister --> FormRegistrasi[Isi Form Registrasi]
+    FormRegistrasi --> IsiDataPribadi[Isi Data Pribadi]
+    IsiDataPribadi --> IsiDataLembaga[Isi Data Lembaga PAUD]
+    IsiDataLembaga --> UploadFoto[Upload Foto Profil]
+    UploadFoto --> ValidasiForm{Validasi Form}
+    ValidasiForm -->|Tidak Valid| FormRegistrasi
+    ValidasiForm -->|Valid| SimpanDatabase[Simpan ke Database]
+    SimpanDatabase --> SetStatusPending[Set Status = Pending]
+    SetStatusPending --> RedirectLogin[Redirect ke Halaman Login]
+    RedirectLogin --> TungguVerifikasi[Tunggu Verifikasi Admin]
+    TungguVerifikasi --> End2([End])
+```
+
+### Flowchart Verifikasi Admin
+
+```mermaid
+flowchart TD
+    StartAdmin([Start]) --> LoginAdmin[Admin Login]
+    LoginAdmin --> BukaDashboard[Buka Dashboard Admin]
+    BukaDashboard --> MenuVerifikasi[Pilih Menu Verifikasi Anggota]
+    MenuVerifikasi --> TampilPending[Tampilkan List Member Pending]
+    TampilPending --> PilihMember[Pilih Member untuk Review]
+    PilihMember --> LihatDetail[Lihat Detail Data Member]
+    LihatDetail --> KeputusanAdmin{Keputusan Admin}
+    KeputusanAdmin -->|Approve| UpdateActive[Update Status = Active]
+    UpdateActive --> KirimEmailApprove[Kirim Email Approval]
+    KirimEmailApprove --> NotifSuccess1[Notifikasi Success]
+    NotifSuccess1 --> EndAdmin1([End])
+    KeputusanAdmin -->|Reject| UpdateReject[Update Status = Rejected]
+    UpdateReject --> KirimEmailReject[Kirim Email Rejection]
+    KirimEmailReject --> NotifSuccess2[Notifikasi Success]
+    NotifSuccess2 --> EndAdmin2([End])
+```
+
+### Flowchart Kelola Berita
+
+```mermaid
+flowchart TD
+    StartBerita([Start]) --> LoginAdminBerita[Admin Login]
+    LoginAdminBerita --> MenuBerita[Pilih Menu Kelola Berita]
+    MenuBerita --> PilihAksi{Pilih Aksi}
+    PilihAksi -->|Tambah| FormTambah[Form Tambah Berita]
+    FormTambah --> IsiJudul[Isi Judul & Konten]
+    IsiJudul --> UploadThumbnail[Upload Thumbnail]
+    UploadThumbnail --> UploadFotos[Upload Multiple Foto]
+    UploadFotos --> SetPublish{Set Publish?}
+    SetPublish -->|Ya| SetTanggalPublish[Set Tanggal Publish]
+    SetPublish -->|Tidak| StatusDraft[Status Draft]
+    SetTanggalPublish --> SimpanBerita[Simpan Berita]
+    StatusDraft --> SimpanBerita
+    SimpanBerita --> EndBerita1([End])
+
+    PilihAksi -->|Edit| PilihBerita[Pilih Berita]
+    PilihBerita --> FormEdit[Form Edit Berita]
+    FormEdit --> UpdateData[Update Data Berita]
+    UpdateData --> HapusFoto{Hapus Foto Lama?}
+    HapusFoto -->|Ya| DeleteFoto[Delete Foto dari Storage]
+    HapusFoto -->|Tidak| TambahFotoBaru{Tambah Foto Baru?}
+    DeleteFoto --> TambahFotoBaru
+    TambahFotoBaru -->|Ya| UploadFotoBaru[Upload Foto Baru]
+    TambahFotoBaru -->|Tidak| UpdateBerita[Update Berita]
+    UploadFotoBaru --> UpdateBerita
+    UpdateBerita --> EndBerita2([End])
+
+    PilihAksi -->|Hapus| KonfirmasiHapus{Konfirmasi Hapus?}
+    KonfirmasiHapus -->|Ya| DeleteBeritaFoto[Hapus Semua Foto]
+    DeleteBeritaFoto --> DeleteBerita[Hapus Berita]
+    DeleteBerita --> EndBerita3([End])
+    KonfirmasiHapus -->|Tidak| MenuBerita
+```
+
+### Arsitektur Sistem
+
+```mermaid
+graph TB
+    subgraph "Frontend Layer"
+        A[Public Pages] --> A1[Landing Page]
+        A --> A2[Berita]
+        A --> A3[Galeri]
+        A --> A4[Forum]
+        A --> A5[Struktur Organisasi]
+
+        B[Auth Pages] --> B1[Login]
+        B --> B2[Register]
+
+        C[Member Dashboard] --> C1[Profile]
+        C --> C2[Data Lembaga]
+        C --> C3[Forum Diskusi]
+
+        D[Admin Dashboard] --> D1[Kelola Anggota]
+        D --> D2[Kelola Berita]
+        D --> D3[Kelola Galeri]
+        D --> D4[Kelola Forum]
+        D --> D5[Visi Misi]
+        D --> D6[FAQ]
+        D --> D7[Info Kontak]
+    end
+
+    subgraph "Backend Layer"
+        E[Controllers] --> E1[Auth Controller]
+        E --> E2[Member Controller]
+        E --> E3[Berita Controller]
+        E --> E4[Galeri Controller]
+        E --> E5[Forum Controller]
+
+        F[Models] --> F1[User]
+        F --> F2[DataPribadi]
+        F --> F3[DataLembaga]
+        F --> F4[Berita]
+        F --> F5[BeritaPhoto]
+        F --> F6[Galeri]
+        F --> F7[Forum]
+        F --> F8[VisiMisi]
+        F --> F9[FAQ]
+        F --> F10[ContactInfo]
+
+        G[Services] --> G1[Email Service]
+        G --> G2[Storage Service]
+        G --> G3[Queue Service]
+    end
+
+    subgraph "Database Layer"
+        H[(MySQL)] --> H1[users]
+        H --> H2[data_pribadi]
+        H --> H3[data_lembaga]
+        H --> H4[berita]
+        H --> H5[berita_photos]
+        H --> H6[galeri]
+        H --> H7[forum]
+        H --> H8[visi_misi]
+        H --> H9[faq]
+        H --> H10[contact_info]
+    end
+
+    A --> E
+    B --> E1
+    C --> E
+    D --> E
+    E --> F
+    F --> H
+    G1 -.Email Notification.-> E2
+    G2 -.File Upload.-> E3
+    G2 -.File Upload.-> E4
+    G3 -.Queue Jobs.-> G1
+```
+
+### Alur Verifikasi Member
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant System
+    participant Admin
+    participant Email
+
+    User->>System: Registrasi (Data Pribadi + Lembaga)
+    System->>System: Validasi Data
+    System->>System: Set Status = Pending
+    System-->>User: Redirect ke Login (Success Message)
+
+    Admin->>System: Login & Buka Menu Verifikasi
+    System-->>Admin: Tampilkan List Pending Members
+    Admin->>System: Review Data Member
+
+    alt Approve Member
+        Admin->>System: Click Approve
+        System->>System: Update Status = Active
+        System->>Email: Kirim Email Approval
+        Email-->>User: Notifikasi Approval
+        System-->>Admin: Success Message
+    else Reject Member
+        Admin->>System: Click Reject
+        System->>System: Update Status = Rejected
+        System->>Email: Kirim Email Rejection
+        Email-->>User: Notifikasi Rejection
+        System-->>Admin: Success Message
+    end
+```
+
+### Entity Relationship Diagram
+
+```mermaid
+erDiagram
+    USERS ||--o| DATA_PRIBADI : has
+    USERS ||--o| DATA_LEMBAGA : has
+    USERS ||--o{ BERITA : creates
+    USERS ||--o{ FORUM : creates
+    BERITA ||--o{ BERITA_PHOTOS : contains
+
+    USERS {
+        int id PK
+        string username
+        string email
+        string password
+        enum role
+        enum status
+        datetime created_at
+    }
+
+    DATA_PRIBADI {
+        int id PK
+        int user_id FK
+        string nama_lengkap
+        string niptk_nuptk
+        string no_ktp
+        string tempat_lahir
+        date tanggal_lahir
+        enum jenis_kelamin
+        string pendidikan_terakhir
+        string no_hp
+        string foto_profil
+    }
+
+    DATA_LEMBAGA {
+        int id PK
+        int user_id FK
+        string nama_lembaga
+        string npsn
+        string alamat_lembaga
+        enum kelurahan
+        string kecamatan
+        string no_telp_lembaga
+        string email_lembaga
+    }
+
+    BERITA {
+        int id PK
+        int user_id FK
+        string judul
+        string slug
+        longtext konten
+        string thumbnail
+        boolean is_published
+        datetime published_at
+    }
+
+    BERITA_PHOTOS {
+        int id PK
+        int berita_id FK
+        string photo_path
+        string caption
+        int order
+    }
+
+    GALERI {
+        int id PK
+        string judul_kegiatan
+        string deskripsi
+        string file_gambar
+        date tanggal_kegiatan
+    }
+
+    FORUM {
+        int id PK
+        int user_id FK
+        string judul
+        string slug
+        text konten
+        int views
+    }
+```
+
 ## 📋 Persyaratan Sistem
 
 -   PHP >= 8.2
