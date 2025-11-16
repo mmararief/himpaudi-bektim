@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
+use App\Models\BeritaPhoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -43,6 +44,7 @@ class BeritaController extends Controller
             'judul' => ['required', 'string', 'max:255'],
             'konten' => ['required', 'string'],
             'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'photos.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_published' => ['sometimes', 'boolean'],
             'published_at' => ['nullable', 'date'],
         ]);
@@ -57,7 +59,18 @@ class BeritaController extends Controller
             $data['published_at'] = now();
         }
 
-        Berita::create($data);
+        $berita = Berita::create($data);
+
+        // Handle multiple photos
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $index => $photo) {
+                $path = $photo->store('berita/photos', 'public');
+                $berita->photos()->create([
+                    'photo_path' => $path,
+                    'order' => $index,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan');
     }
@@ -83,6 +96,9 @@ class BeritaController extends Controller
             'judul' => ['required', 'string', 'max:255'],
             'konten' => ['required', 'string'],
             'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'photos.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'delete_photos' => ['nullable', 'array'],
+            'delete_photos.*' => ['integer', 'exists:berita_photos,id'],
             'is_published' => ['sometimes', 'boolean'],
             'published_at' => ['nullable', 'date'],
         ]);
@@ -101,6 +117,32 @@ class BeritaController extends Controller
 
         $berita->update($data);
 
+        // Delete selected photos
+        if ($request->filled('delete_photos')) {
+            $photosToDelete = BeritaPhoto::whereIn('id', $request->delete_photos)
+                ->where('berita_id', $berita->id)
+                ->get();
+
+            foreach ($photosToDelete as $photo) {
+                if (Storage::disk('public')->exists($photo->photo_path)) {
+                    Storage::disk('public')->delete($photo->photo_path);
+                }
+                $photo->delete();
+            }
+        }
+
+        // Add new photos
+        if ($request->hasFile('photos')) {
+            $currentMaxOrder = $berita->photos()->max('order') ?? -1;
+            foreach ($request->file('photos') as $index => $photo) {
+                $path = $photo->store('berita/photos', 'public');
+                $berita->photos()->create([
+                    'photo_path' => $path,
+                    'order' => $currentMaxOrder + $index + 1,
+                ]);
+            }
+        }
+
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui');
     }
 
@@ -110,9 +152,19 @@ class BeritaController extends Controller
     public function destroy(Berita $beritum)
     {
         $berita = $beritum;
+
+        // Delete thumbnail
         if ($berita->thumbnail && Storage::disk('public')->exists($berita->thumbnail)) {
             Storage::disk('public')->delete($berita->thumbnail);
         }
+
+        // Delete all photos
+        foreach ($berita->photos as $photo) {
+            if (Storage::disk('public')->exists($photo->photo_path)) {
+                Storage::disk('public')->delete($photo->photo_path);
+            }
+        }
+
         $berita->delete();
 
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus');

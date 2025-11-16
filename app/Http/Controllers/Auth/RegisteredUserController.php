@@ -54,8 +54,7 @@ class RegisteredUserController extends Controller
 
             // Data Lembaga
             'nama_lembaga' => ['required', 'string', 'max:255'],
-            // NPSN dapat sama (merepresentasikan sekolah yang sama untuk beberapa anggota)
-            'npsn' => ['required', 'string', 'max:8'],
+            'npsn' => ['required', 'string', 'max:8', 'unique:data_lembaga'],
             'alamat_lembaga' => ['required', 'string'],
             'kelurahan' => ['required', 'in:Aren Jaya,Bekasi Jaya,Duren Jaya,Margahayu'],
             'no_telp_lembaga' => ['nullable', 'string', 'max:15'],
@@ -95,15 +94,19 @@ class RegisteredUserController extends Controller
             'foto_profil' => $fotoPath,
         ]);
 
-        // Create Data Lembaga
+        // Upload foto sekolah if exists
+        $fotoSekolahPath = null;
+        if ($request->hasFile('foto_sekolah')) {
+            $fotoSekolahPath = $request->file('foto_sekolah')->store('sekolah', 'public');
+        }
+
+        // Create Data Lembaga (original fields only)
         $user->dataLembaga()->create([
             'nama_lembaga' => $validated['nama_lembaga'],
             'npsn' => $validated['npsn'],
             'alamat_lembaga' => $validated['alamat_lembaga'],
             'kelurahan' => $validated['kelurahan'],
             'kecamatan' => 'Bekasi Timur',
-            'no_telp_lembaga' => $validated['no_telp_lembaga'] ?? null,
-            'email_lembaga' => $validated['email_lembaga'] ?? null,
         ]);
 
         event(new Registered($user));

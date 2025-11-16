@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController as PublicBeritaController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/struktur-organisasi', [HomeController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -1,59 +1,245 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# HIMPAUDI Bekasi Timur - Platform Website
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Platform digital terpadu untuk Himpunan Pendidik dan Tenaga Kependidikan Anak Usia Dini (HIMPAUDI) Kecamatan Bekasi Timur. Website ini menyediakan sistem manajemen anggota, berita, galeri, forum diskusi, dan berbagai fitur pendukung lainnya.
 
-## About Laravel
+## 🚀 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   **Manajemen Anggota**: Pendaftaran online, verifikasi admin, profil lengkap (data pribadi & lembaga)
+-   **Berita & Artikel**: Publikasi berita dengan multiple photos, thumbnail, dan slug otomatis
+-   **Galeri Foto**: Dokumentasi kegiatan dengan kategori dan tanggal kegiatan
+-   **Forum Diskusi**: Platform kolaborasi dan diskusi antar anggota
+-   **Struktur Organisasi**: Tampilan struktur pengurus HIMPAUDI
+-   **FAQ**: Pertanyaan yang sering diajukan
+-   **Visi Misi**: Manajemen visi dan misi organisasi
+-   **Info Kontak**: Informasi kontak dinamis
+-   **Email Notification**: Notifikasi otomatis untuk approval/rejection member
+-   **Multi-role**: Admin dan Member dengan dashboard terpisah
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Persyaratan Sistem
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   PHP >= 8.2
+-   Composer
+-   Node.js & NPM
+-   MySQL/MariaDB >= 5.7
+-   Web Server (Apache/Nginx)
 
-## Learning Laravel
+## 🛠️ Instalasi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 1. Clone Repository
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone https://github.com/mmararief/himpaudi-bektim.git
+cd himpaudi-bektim
+```
 
-## Laravel Sponsors
+### 2. Install Dependencies
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+# Install PHP dependencies
+composer install
 
-### Premium Partners
+# Install Node.js dependencies
+npm install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. Konfigurasi Environment
 
-## Contributing
+```bash
+# Copy file .env example
+cp .env.example .env
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Generate application key
+php artisan key:generate
+```
 
-## Code of Conduct
+### 4. Konfigurasi Database
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Edit file `.env` dan sesuaikan dengan konfigurasi database Anda:
 
-## Security Vulnerabilities
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=himpaudi_bektim
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Konfigurasi Email (Opsional)
 
-## License
+Untuk fitur notifikasi email, konfigurasikan SMTP di file `.env`:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="your-email@gmail.com"
+MAIL_FROM_NAME="HIMPAUDI Bekasi Timur"
+```
+
+**Catatan**: Untuk Gmail, gunakan [App Password](https://support.google.com/accounts/answer/185833) bukan password biasa.
+
+### 6. Migrasi Database dan Seeder
+
+```bash
+# Jalankan migrasi
+php artisan migrate
+
+# (Opsional) Jalankan seeder untuk data awal
+php artisan db:seed
+```
+
+### 7. Setup Storage
+
+```bash
+# Buat symbolic link untuk storage
+php artisan storage:link
+```
+
+### 8. Build Assets
+
+```bash
+# Development
+npm run dev
+
+# Production
+npm run build
+```
+
+### 9. Jalankan Aplikasi
+
+```bash
+# Development server
+php artisan serve
+```
+
+Buka browser dan akses: `http://localhost:8000`
+
+### 10. Setup Queue Worker (Opsional)
+
+Untuk email notification yang optimal:
+
+```bash
+# Development
+php artisan queue:work
+
+# Atau dengan listen (auto-reload)
+php artisan queue:listen
+```
+
+## 👤 Akun Default
+
+Setelah menjalankan seeder, Anda dapat login dengan akun:
+
+**Admin:**
+
+-   Email: admin@himpaudi-bektim.org
+-   Password: password
+
+## 📁 Struktur Folder Penting
+
+```
+himpaudi-bektim/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── Admin/          # Controller untuk admin
+│   │   ├── Auth/           # Authentication controllers
+│   │   └── ...
+│   ├── Models/             # Eloquent models
+│   └── Mail/               # Email templates (Mailables)
+├── database/
+│   ├── migrations/         # Database migrations
+│   └── seeders/            # Database seeders
+├── public/
+│   └── images/             # Logo dan gambar statis
+├── resources/
+│   ├── views/              # Blade templates
+│   │   ├── admin/          # Admin views
+│   │   ├── auth/           # Authentication views
+│   │   ├── berita/         # Berita public views
+│   │   ├── galeri/         # Galeri views
+│   │   └── ...
+│   ├── css/                # Stylesheets
+│   └── js/                 # JavaScript files
+├── routes/
+│   └── web.php             # Web routes
+└── storage/
+    └── app/public/         # Uploaded files
+```
+
+## 🎨 Teknologi yang Digunakan
+
+-   **Framework**: Laravel 11.x
+-   **Frontend**: Tailwind CSS, Alpine.js (via Breeze)
+-   **Authentication**: Laravel Breeze
+-   **Database**: MySQL
+-   **Email**: Laravel Mail + Queue
+-   **File Storage**: Laravel Storage (local/public disk)
+
+## 📝 Fitur Admin
+
+1. **Dashboard**: Overview statistik
+2. **Manajemen Anggota**: Verifikasi, edit, hapus member
+3. **Kelola Berita**: CRUD berita dengan multiple photos
+4. **Kelola Galeri**: Upload dan manajemen foto kegiatan
+5. **Kelola Forum**: Moderasi diskusi
+6. **Visi Misi**: Update visi dan misi
+7. **FAQ**: Manajemen pertanyaan umum
+8. **Info Kontak**: Update informasi kontak
+
+## 📝 Fitur Member
+
+1. **Dashboard**: Akses informasi personal
+2. **Profil**: Edit data pribadi dan data lembaga
+3. **Forum**: Buat topik dan diskusi
+4. **Galeri**: Lihat dokumentasi kegiatan
+5. **Berita**: Baca berita terbaru
+
+## 🔐 Keamanan
+
+-   Password hashing menggunakan bcrypt
+-   CSRF protection
+-   SQL injection prevention (Eloquent ORM)
+-   XSS protection
+-   Email verification (optional)
+-   Role-based access control
+
+## 🐛 Troubleshooting
+
+### Error 500 setelah instalasi
+
+```bash
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+```
+
+### Gambar tidak muncul
+
+```bash
+php artisan storage:link
+```
+
+### Email tidak terkirim
+
+-   Pastikan konfigurasi SMTP di `.env` sudah benar
+-   Untuk Gmail, gunakan App Password
+-   Jalankan `php artisan queue:work`
+-   Cek log di `storage/logs/laravel.log`
+
+### Asset tidak ter-build
+
+```bash
+npm install
+npm run build
+```
+
+## 📄 License
+
+Project ini menggunakan framework Laravel yang berlisensi [MIT license](https://opensource.org/licenses/MIT).
+
+---

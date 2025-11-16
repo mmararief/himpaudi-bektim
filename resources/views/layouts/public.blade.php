@@ -35,6 +35,9 @@
                                 <a href="{{ route('home') }}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-600 hover:text-gray-900 transition">
                                     Beranda
                                 </a>
+                                <a href="{{ route('struktur-organisasi') }}" class="inline-flex items-center px-1 pt-1 text-sm font-medium {{ request()->routeIs('struktur-organisasi') ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900' }} transition">
+                                    Struktur Organisasi
+                                </a>
                                 <a href="{{ route('berita.index') }}" class="inline-flex items-center px-1 pt-1 text-sm font-medium {{ request()->routeIs('berita.*') ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900' }} transition">
                                     Berita
                                 </a>
@@ -44,6 +47,7 @@
                                 <a href="{{ route('forum.index') }}" class="inline-flex items-center px-1 pt-1 text-sm font-medium {{ request()->routeIs('forum.*') ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-gray-900' }} transition">
                                     Forum
                                 </a>
+                                
                             </div>
                         </div>
 

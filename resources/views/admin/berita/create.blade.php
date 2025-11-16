@@ -24,6 +24,16 @@
             @error('thumbnail')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
         </div>
 
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Foto Berita (bisa lebih dari 1)</label>
+            <input type="file" name="photos[]" accept="image/*" multiple class="w-full" id="photos-input">
+            <p class="text-xs text-gray-500 mt-1">Pilih beberapa foto sekaligus (Ctrl/Cmd + Klik). Format: JPG/PNG/WEBP. Maks 2MB per foto.</p>
+            @error('photos.*')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
+            
+            <!-- Preview container -->
+            <div id="preview-container" class="mt-3 grid grid-cols-3 gap-2"></div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <label class="inline-flex items-center gap-2">
                 <input type="checkbox" name="is_published" value="1" class="rounded" {{ old('is_published') ? 'checked' : '' }}>
@@ -41,4 +51,29 @@
             <button type="submit" class="px-4 py-2 rounded-lg bg-blue-600 text-white">Simpan</button>
         </div>
     </form>
+
+    @push('scripts')
+    <script>
+        document.getElementById('photos-input').addEventListener('change', function(e) {
+            const preview = document.getElementById('preview-container');
+            preview.innerHTML = '';
+            
+            if (this.files) {
+                Array.from(this.files).forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const div = document.createElement('div');
+                        div.className = 'relative';
+                        div.innerHTML = `
+                            <img src="${e.target.result}" class="w-full h-24 object-cover rounded border">
+                            <span class="absolute top-1 left-1 bg-blue-600 text-white text-xs px-2 py-0.5 rounded">${index + 1}</span>
+                        `;
+                        preview.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
+    </script>
+    @endpush
 </x-admin-layout>

@@ -237,6 +237,7 @@
             </div>
         </div>
 
+
         <!-- Important Info -->
         <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-amber-500 p-5 rounded-r-lg">
             <div class="flex gap-3">

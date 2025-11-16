@@ -33,4 +33,9 @@ class HomeController extends Controller
             'berita' => $berita,
         ]);
     }
+
+    public function strukturOrganisasi()
+    {
+        return view('struktur-organisasi');
+    }
 }
