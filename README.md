@@ -5,9 +5,11 @@ Platform digital terpadu untuk Himpunan Pendidik dan Tenaga Kependidikan Anak Us
 ## 🚀 Fitur Utama
 
 -   **Manajemen Anggota**: Pendaftaran online, verifikasi admin, profil lengkap (data pribadi & lembaga)
--   **Berita & Artikel**: Publikasi berita dengan multiple photos, thumbnail, dan slug otomatis
+-   **Lembaga Master**: Database PAUD dengan import CSV, CRUD, dan linking ke data lembaga anggota
+-   **Pencarian Publik**: Cari lembaga PAUD dan profil anggota yang sudah aktif
+-   **Berita & Artikel**: Publikasi berita dengan multiple photos, thumbnail, komentar, dan slug otomatis
 -   **Galeri Foto**: Dokumentasi kegiatan dengan kategori dan tanggal kegiatan
--   **Forum Diskusi**: Platform kolaborasi dan diskusi antar anggota
+-   **Forum Diskusi**: Platform kolaborasi dan diskusi antar anggota dengan fitur pin dan lock
 -   **Struktur Organisasi**: Tampilan struktur pengurus HIMPAUDI
 -   **FAQ**: Pertanyaan yang sering diajukan
 -   **Visi Misi**: Manajemen visi dan misi organisasi
@@ -21,17 +23,65 @@ Platform digital terpadu untuk Himpunan Pendidik dan Tenaga Kependidikan Anak Us
 
 ```mermaid
 flowchart TD
-    Start([Start]) --> ReadWebsite[Baca Website/RT]
-    ReadWebsite --> MenuChoice{Pilih Menu}
+    Start([Start]) --> BukaWebsite[Akses Website HIMPAUDI]
+    BukaWebsite --> UserType{Status User}
 
-    MenuChoice -->|Berita| Berita[Pilih Berita]
-    Berita --> EndBerita([End])
+    UserType -->|Guest| GuestMenu{Pilih Menu}
+    GuestMenu -->|Beranda| LihatBeranda[Lihat Beranda]
+    GuestMenu -->|Berita| LihatBerita[Baca Berita & Komentar]
+    GuestMenu -->|Galeri| LihatGaleri[Lihat Galeri Kegiatan]
+    GuestMenu -->|Forum| LihatForum[Baca Forum Diskusi]
+    GuestMenu -->|Struktur Org| LihatStruktur[Lihat Struktur Organisasi]
+    GuestMenu -->|Cari Lembaga| CariLembaga[Cari Data Lembaga/Profil]
+    GuestMenu -->|Registrasi| Registrasi[Daftar Akun Member]
+    GuestMenu -->|Login| Login[Login ke Sistem]
 
-    MenuChoice -->|Login| Login[Login]
-    Login --> ValidLogin{Validasi Login?}
-    ValidLogin -->|Ya| Dashboard[Akses Dashboard]
-    Dashboard --> EndDashboard([End])
-    ValidLogin -->|Tidak| Login
+    LihatBeranda --> EndGuest1([End])
+    LihatBerita --> EndGuest2([End])
+    LihatGaleri --> EndGuest3([End])
+    LihatForum --> EndGuest4([End])
+    LihatStruktur --> EndGuest5([End])
+    CariLembaga --> EndGuest6([End])
+    Registrasi --> TungguApproval[Tunggu Approval Admin]
+    TungguApproval --> EndGuest7([End])
+
+    Login --> ValidasiLogin{Login Valid?}
+    ValidasiLogin -->|Tidak| Login
+    ValidasiLogin -->|Ya| CekRole{Cek Role}
+
+    UserType -->|Member Login| CekRole
+
+    CekRole -->|Admin| AdminMenu{Menu Admin}
+    AdminMenu -->|Dashboard| AdminDashboard[Dashboard Admin]
+    AdminMenu -->|Kelola Member| KelolaAnggota[Verifikasi & Kelola Anggota]
+    AdminMenu -->|Kelola Berita| KelolaBerita[CRUD Berita & Foto]
+    AdminMenu -->|Kelola Galeri| KelolaGaleriAdmin[CRUD Galeri]
+    AdminMenu -->|Kelola Forum| KelolaForum[Moderasi Forum & Pin/Lock]
+    AdminMenu -->|Kelola Lembaga| KelolaLembaga[Import/CRUD Lembaga Master]
+    AdminMenu -->|Setting| KelolaSetting[Visi Misi, FAQ, Kontak]
+
+    AdminDashboard --> EndAdmin1([End])
+    KelolaAnggota --> EndAdmin2([End])
+    KelolaBerita --> EndAdmin3([End])
+    KelolaGaleriAdmin --> EndAdmin4([End])
+    KelolaForum --> EndAdmin5([End])
+    KelolaLembaga --> EndAdmin6([End])
+    KelolaSetting --> EndAdmin7([End])
+
+    CekRole -->|Member| MemberMenu{Menu Member}
+    MemberMenu -->|Dashboard| MemberDashboard[Dashboard Member]
+    MemberMenu -->|Profil| EditProfil[Edit Data Pribadi & Lembaga]
+    MemberMenu -->|Berita| BeritaMember[Baca & Komentar Berita]
+    MemberMenu -->|Forum| ForumMember[Buat Topik & Diskusi]
+    MemberMenu -->|Galeri| GaleriMember[Lihat Galeri]
+    MemberMenu -->|Cari| CariMember[Cari Lembaga/Anggota]
+
+    MemberDashboard --> EndMember1([End])
+    EditProfil --> EndMember2([End])
+    BeritaMember --> EndMember3([End])
+    ForumMember --> EndMember4([End])
+    GaleriMember --> EndMember5([End])
+    CariMember --> EndMember6([End])
 ```
 
 ### Flowchart Registrasi Member
@@ -144,34 +194,42 @@ graph TB
         E --> E3[Berita Controller]
         E --> E4[Galeri Controller]
         E --> E5[Forum Controller]
+        E --> E6[Lembaga Master Controller]
 
         F[Models] --> F1[User]
         F --> F2[DataPribadi]
         F --> F3[DataLembaga]
         F --> F4[Berita]
         F --> F5[BeritaPhoto]
-        F --> F6[Galeri]
-        F --> F7[Forum]
-        F --> F8[VisiMisi]
-        F --> F9[FAQ]
-        F --> F10[ContactInfo]
+        F --> F6[BeritaComment]
+        F --> F7[Galeri]
+        F --> F8[ForumTopik]
+        F --> F9[ForumBalasan]
+        F --> F10[LembagaMaster]
+        F --> F11[VisiMisi]
+        F --> F12[FAQ]
+        F --> F13[ContactInfo]
 
         G[Services] --> G1[Email Service]
         G --> G2[Storage Service]
         G --> G3[Queue Service]
+        G --> G4[Import Service]
     end
 
     subgraph "Database Layer"
         H[(MySQL)] --> H1[users]
         H --> H2[data_pribadi]
         H --> H3[data_lembaga]
-        H --> H4[berita]
-        H --> H5[berita_photos]
-        H --> H6[galeri]
-        H --> H7[forum]
-        H --> H8[visi_misi]
-        H --> H9[faq]
-        H --> H10[contact_info]
+        H --> H4[lembaga_masters]
+        H --> H5[berita]
+        H --> H6[berita_photos]
+        H --> H7[berita_comments]
+        H --> H8[galeri]
+        H --> H9[forum_topik]
+        H --> H10[forum_balasan]
+        H --> H11[visi_misi]
+        H --> H12[faq]
+        H --> H13[contact_info]
     end
 
     A --> E
@@ -226,8 +284,14 @@ erDiagram
     USERS ||--o| DATA_PRIBADI : has
     USERS ||--o| DATA_LEMBAGA : has
     USERS ||--o{ BERITA : creates
-    USERS ||--o{ FORUM : creates
+    USERS ||--o{ FORUM_TOPIK : creates
+    USERS ||--o{ FORUM_BALASAN : creates
+    USERS ||--o{ BERITA_COMMENTS : creates
     BERITA ||--o{ BERITA_PHOTOS : contains
+    BERITA ||--o{ BERITA_COMMENTS : has
+    FORUM_TOPIK ||--o{ FORUM_BALASAN : has
+    LEMBAGA_MASTERS ||--o{ DATA_LEMBAGA : references
+    DATA_LEMBAGA }o--|| LEMBAGA_MASTERS : linked_to
 
     USERS {
         int id PK
@@ -244,11 +308,15 @@ erDiagram
         int user_id FK
         string nama_lengkap
         string niptk_nuptk
+        string no_kta_lama
         string no_ktp
         string tempat_lahir
         date tanggal_lahir
         enum jenis_kelamin
         string pendidikan_terakhir
+        date tmt_kerja
+        json riwayat_diklat
+        string alamat_domisili
         string no_hp
         string foto_profil
     }
@@ -256,13 +324,23 @@ erDiagram
     DATA_LEMBAGA {
         int id PK
         int user_id FK
+        int lembaga_master_id FK
         string nama_lembaga
         string npsn
-        string alamat_lembaga
-        enum kelurahan
+    }
+
+    LEMBAGA_MASTERS {
+        int id PK
+        string nama_lembaga
+        string npsn
+        string akreditasi
+        string kepala_sekolah
+        string alamat
         string kecamatan
-        string no_telp_lembaga
-        string email_lembaga
+        string kelurahan
+        int jumlah_guru
+        int jumlah_siswa
+        string foto
     }
 
     BERITA {
@@ -274,6 +352,7 @@ erDiagram
         string thumbnail
         boolean is_published
         datetime published_at
+        int views
     }
 
     BERITA_PHOTOS {
@@ -284,6 +363,14 @@ erDiagram
         int order
     }
 
+    BERITA_COMMENTS {
+        int id PK
+        int berita_id FK
+        int user_id FK
+        text comment
+        datetime created_at
+    }
+
     GALERI {
         int id PK
         string judul_kegiatan
@@ -292,13 +379,47 @@ erDiagram
         date tanggal_kegiatan
     }
 
-    FORUM {
+    FORUM_TOPIK {
         int id PK
         int user_id FK
         string judul
         string slug
         text konten
         int views
+        boolean is_pinned
+        boolean is_locked
+    }
+
+    FORUM_BALASAN {
+        int id PK
+        int forum_topik_id FK
+        int user_id FK
+        text konten
+        datetime created_at
+    }
+
+    VISI_MISI {
+        int id PK
+        text visi
+        text misi
+        boolean is_active
+    }
+
+    FAQ {
+        int id PK
+        string pertanyaan
+        text jawaban
+        int urutan
+        boolean is_active
+    }
+
+    CONTACT_INFO {
+        int id PK
+        string alamat
+        string telepon
+        string email
+        string whatsapp
+        boolean is_active
     }
 ```
 
@@ -317,7 +438,9 @@ classDiagram
         +dataPribadi()
         +dataLembaga()
         +berita()
-        +forum()
+        +forumTopik()
+        +forumBalasan()
+        +beritaComments()
     }
 
     class DataPribadi {
@@ -325,11 +448,15 @@ classDiagram
         +int user_id
         +string nama_lengkap
         +string niptk_nuptk
+        +string no_kta_lama
         +string no_ktp
         +string tempat_lahir
         +date tanggal_lahir
         +enum jenis_kelamin
         +string pendidikan_terakhir
+        +date tmt_kerja
+        +json riwayat_diklat
+        +string alamat_domisili
         +string no_hp
         +string foto_profil
         +timestamps
@@ -339,15 +466,28 @@ classDiagram
     class DataLembaga {
         +int id
         +int user_id
+        +int lembaga_master_id
         +string nama_lembaga
         +string npsn
-        +string alamat_lembaga
-        +enum kelurahan
-        +string kecamatan
-        +string no_telp_lembaga
-        +string email_lembaga
         +timestamps
         +user()
+        +lembagaMaster()
+    }
+
+    class LembagaMaster {
+        +int id
+        +string nama_lembaga
+        +string npsn
+        +string akreditasi
+        +string kepala_sekolah
+        +string alamat
+        +string kecamatan
+        +string kelurahan
+        +int jumlah_guru
+        +int jumlah_siswa
+        +string foto
+        +timestamps
+        +dataLembaga()
     }
 
     class Berita {
@@ -359,9 +499,12 @@ classDiagram
         +string thumbnail
         +boolean is_published
         +datetime published_at
+        +int views
         +timestamps
         +user()
         +photos()
+        +comments()
+        +scopePublished()
     }
 
     class BeritaPhoto {
@@ -374,6 +517,16 @@ classDiagram
         +berita()
     }
 
+    class BeritaComment {
+        +int id
+        +int berita_id
+        +int user_id
+        +text comment
+        +timestamps
+        +berita()
+        +user()
+    }
+
     class Galeri {
         +int id
         +string judul_kegiatan
@@ -383,14 +536,27 @@ classDiagram
         +timestamps
     }
 
-    class Forum {
+    class ForumTopik {
         +int id
         +int user_id
         +string judul
         +string slug
         +text konten
         +int views
+        +boolean is_pinned
+        +boolean is_locked
         +timestamps
+        +user()
+        +balasan()
+    }
+
+    class ForumBalasan {
+        +int id
+        +int forum_topik_id
+        +int user_id
+        +text konten
+        +timestamps
+        +forumTopik()
         +user()
     }
 
@@ -398,6 +564,7 @@ classDiagram
         +int id
         +text visi
         +text misi
+        +boolean is_active
         +timestamps
     }
 
@@ -406,6 +573,7 @@ classDiagram
         +string pertanyaan
         +text jawaban
         +int urutan
+        +boolean is_active
         +timestamps
     }
 
@@ -415,14 +583,20 @@ classDiagram
         +string telepon
         +string email
         +string whatsapp
+        +boolean is_active
         +timestamps
     }
 
     User "1" --> "1" DataPribadi
     User "1" --> "1" DataLembaga
     User "1" --> "*" Berita
-    User "1" --> "*" Forum
+    User "1" --> "*" ForumTopik
+    User "1" --> "*" ForumBalasan
+    User "1" --> "*" BeritaComment
+    DataLembaga "*" --> "1" LembagaMaster
     Berita "1" --> "*" BeritaPhoto
+    Berita "1" --> "*" BeritaComment
+    ForumTopik "1" --> "*" ForumBalasan
 ```
 
 ### UML Use Case Diagram
@@ -735,21 +909,24 @@ himpaudi-bektim/
 ## 📝 Fitur Admin
 
 1. **Dashboard**: Overview statistik
-2. **Manajemen Anggota**: Verifikasi, edit, hapus member
-3. **Kelola Berita**: CRUD berita dengan multiple photos
+2. **Manajemen Anggota**: Verifikasi (approve/reject), edit, hapus member
+3. **Kelola Berita**: CRUD berita dengan multiple photos dan komentar
 4. **Kelola Galeri**: Upload dan manajemen foto kegiatan
-5. **Kelola Forum**: Moderasi diskusi
-6. **Visi Misi**: Update visi dan misi
-7. **FAQ**: Manajemen pertanyaan umum
-8. **Info Kontak**: Update informasi kontak
+5. **Kelola Forum**: Moderasi diskusi (pin/lock topik, hapus balasan)
+6. **Kelola Lembaga Master**: Import CSV, CRUD data lembaga PAUD
+7. **Kelola User**: CRUD user account dan role management
+8. **Visi Misi**: Update visi dan misi
+9. **FAQ**: Manajemen pertanyaan umum
+10. **Info Kontak**: Update informasi kontak
 
 ## 📝 Fitur Member
 
-1. **Dashboard**: Akses informasi personal
-2. **Profil**: Edit data pribadi dan data lembaga
-3. **Forum**: Buat topik dan diskusi
-4. **Galeri**: Lihat dokumentasi kegiatan
-5. **Berita**: Baca berita terbaru
+1. **Dashboard**: Akses informasi personal dan berita terbaru
+2. **Profil**: Edit data pribadi, data lembaga, dan lihat info lembaga master (jika terhubung)
+3. **Berita**: Baca berita terbaru dan beri komentar
+4. **Forum**: Buat topik diskusi dan balas diskusi
+5. **Galeri**: Lihat dokumentasi kegiatan
+6. **Pencarian**: Cari lembaga PAUD dan profil anggota lain
 
 ## 🔐 Keamanan
 
