@@ -31,7 +31,7 @@
                                id="judul" 
                                name="judul" 
                                value="{{ old('judul') }}"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('judul') border-red-500 @enderror"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('judul') @enderror"
                                placeholder="Masukkan judul topik yang jelas dan deskriptif"
                                required>
                         @error('judul')
@@ -48,7 +48,7 @@
                         <textarea id="konten" 
                                   name="konten" 
                                   rows="12"
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('konten') border-red-500 @enderror"
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('konten') @enderror"
                                   placeholder="Jelaskan topik diskusi Anda secara detail..."
                                   required>{{ old('konten') }}</textarea>
                         @error('konten')
