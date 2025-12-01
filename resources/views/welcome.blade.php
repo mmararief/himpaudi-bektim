@@ -116,6 +116,17 @@
         </div>
     </section>
 
+    <!-- Sejarah -->
+    <section class="bg-gray-50 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-3">Sejarah</h2>
+                <p class="text-gray-600">Sejarah Tentang Himpaudi</p>
+            </div>
+            <div class="p-8 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow text-center">
+                <p class="text-gray-600">HIMPAUDI (Himpunan Pendidik dan Tenaga Kependidikan Anak Usia Dini Indonesia) dideklarasikan pada 31 Agustus 2005 di Batu, Malang. Organisasi ini lahir dari kebutuhan untuk menghimpun, mengembangkan, dan memperjuangkan kesejahteraan pendidik dan tenaga kependidikan anak usia dini di seluruh Indonesia. Deklarasi nasional ini merupakan tindak lanjut dari pertemuan utusan dari seluruh Indonesia.</p>
+            </div>
+    </section>
     <!-- Visi & Misi -->
     <section class="bg-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
