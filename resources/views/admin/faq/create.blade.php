@@ -4,10 +4,10 @@
             <!-- Header -->
             <div class="mb-6">
                 <div class="flex items-center gap-3 mb-2">
-                    <a href="{{ route('admin.faq.index') }}" 
-                       class="text-gray-600 hover:text-gray-900">
+                    <a href="{{ route('admin.faq.index') }}"
+                        class="text-gray-600 hover:text-gray-900">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                     </a>
                     <h2 class="text-2xl font-bold text-gray-800">Tambah FAQ</h2>
@@ -25,14 +25,14 @@
                         <label for="pertanyaan" class="block text-sm font-medium text-gray-700 mb-2">
                             Pertanyaan <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" 
-                               id="pertanyaan" 
-                               name="pertanyaan" 
-                               maxlength="500"
-                               value="{{ old('pertanyaan') }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('pertanyaan') border-red-500 @enderror"
-                               placeholder="Contoh: Bagaimana cara mendaftar menjadi anggota?"
-                               required>
+                        <input type="text"
+                            id="pertanyaan"
+                            name="pertanyaan"
+                            maxlength="500"
+                            value="{{ old('pertanyaan') }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('pertanyaan') border-red-500 @enderror"
+                            placeholder="Contoh: Bagaimana cara mendaftar menjadi anggota?"
+                            required>
                         @error('pertanyaan')
                         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -44,12 +44,12 @@
                         <label for="jawaban" class="block text-sm font-medium text-gray-700 mb-2">
                             Jawaban <span class="text-red-500">*</span>
                         </label>
-                        <textarea id="jawaban" 
-                                  name="jawaban" 
-                                  rows="6"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('jawaban') border-red-500 @enderror"
-                                  placeholder="Masukkan jawaban lengkap untuk pertanyaan ini..."
-                                  required>{{ old('jawaban') }}</textarea>
+                        <textarea id="jawaban"
+                            name="jawaban"
+                            rows="6"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('jawaban') border-red-500 @enderror"
+                            placeholder="Masukkan jawaban lengkap untuk pertanyaan ini..."
+                            required>{{ old('jawaban') }}</textarea>
                         @error('jawaban')
                         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -61,13 +61,13 @@
                         <label for="urutan" class="block text-sm font-medium text-gray-700 mb-2">
                             Urutan Tampilan <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" 
-                               id="urutan" 
-                               name="urutan" 
-                               min="1"
-                               value="{{ old('urutan', $maxUrutan) }}"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('urutan') border-red-500 @enderror"
-                               required>
+                        <input type="number"
+                            id="urutan"
+                            name="urutan"
+                            min="1"
+                            value="{{ old('urutan', $maxUrutan) }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('urutan') border-red-500 @enderror"
+                            required>
                         @error('urutan')
                         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
@@ -77,11 +77,11 @@
                     <!-- Is Active -->
                     <div>
                         <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" 
-                                   name="is_active" 
-                                   value="1"
-                                   {{ old('is_active', true) ? 'checked' : '' }}
-                                   class="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500">
+                            <input type="checkbox"
+                                name="is_active"
+                                value="1"
+                                {{ old('is_active', true) ? 'checked' : '' }}
+                                class="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500">
                             <div>
                                 <span class="text-sm font-medium text-gray-700">Aktifkan Sekarang</span>
                                 <p class="text-xs text-gray-500">FAQ ini akan ditampilkan di halaman landing page</p>
@@ -91,14 +91,14 @@
 
                     <!-- Action Buttons -->
                     <div class="flex justify-end gap-3 pt-4 border-t">
-                        <a href="{{ route('admin.faq.index') }}" 
-                           class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                        <a href="{{ route('admin.faq.index') }}"
+                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
                             Batal
                         </a>
-                        <button type="submit" 
-                                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
+                        <button type="submit"
+                            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
                             Simpan
                         </button>
