@@ -153,106 +153,204 @@
                     @enderror
                 </div>
 
-                <!-- NIK -->
+                <!-- NIPTK/NUPTK -->
                 <div>
-                    <label for="nik" class="block text-sm font-medium text-gray-700 mb-2">NIK</label>
+                    <label for="niptk_nuptk" class="block text-sm font-medium text-gray-700 mb-2">NIPTK/NUPTK</label>
                     <input type="text" 
-                           id="nik" 
-                           name="nik" 
-                           value="{{ old('nik', $user->dataPribadi->nik ?? '') }}"
+                           id="niptk_nuptk" 
+                           name="niptk_nuptk" 
+                           value="{{ old('niptk_nuptk', $user->dataPribadi->niptk_nuptk ?? '') }}"
+                           maxlength="20"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('niptk_nuptk') border-red-500 @enderror">
+                    @error('niptk_nuptk')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- No KTP -->
+                <div>
+                    <label for="no_ktp" class="block text-sm font-medium text-gray-700 mb-2">
+                        No. KTP <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" 
+                           id="no_ktp" 
+                           name="no_ktp" 
+                           value="{{ old('no_ktp', $user->dataPribadi->no_ktp ?? '') }}"
+                           required
                            maxlength="16"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('no_ktp') border-red-500 @enderror">
+                    @error('no_ktp')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Tempat Lahir -->
                 <div>
-                    <label for="tempat_lahir" class="block text-sm font-medium text-gray-700 mb-2">Tempat Lahir</label>
+                    <label for="tempat_lahir" class="block text-sm font-medium text-gray-700 mb-2">
+                        Tempat Lahir <span class="text-red-500">*</span>
+                    </label>
                     <input type="text" 
                            id="tempat_lahir" 
                            name="tempat_lahir" 
                            value="{{ old('tempat_lahir', $user->dataPribadi->tempat_lahir ?? '') }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                           required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tempat_lahir') border-red-500 @enderror">
+                    @error('tempat_lahir')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Tanggal Lahir -->
                 <div>
-                    <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir</label>
+                    <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 mb-2">
+                        Tanggal Lahir <span class="text-red-500">*</span>
+                    </label>
                     <input type="date" 
                            id="tanggal_lahir" 
                            name="tanggal_lahir" 
                            value="{{ old('tanggal_lahir', $user->dataPribadi->tanggal_lahir ?? '') }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                           required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tanggal_lahir') border-red-500 @enderror">
+                    @error('tanggal_lahir')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Jenis Kelamin -->
                 <div>
-                    <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin</label>
+                    <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 mb-2">
+                        Jenis Kelamin <span class="text-red-500">*</span>
+                    </label>
                     <select id="jenis_kelamin" 
                             name="jenis_kelamin" 
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('jenis_kelamin') border-red-500 @enderror">
                         <option value="">Pilih Jenis Kelamin</option>
                         <option value="Laki-laki" {{ old('jenis_kelamin', $user->dataPribadi->jenis_kelamin ?? '') === 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                         <option value="Perempuan" {{ old('jenis_kelamin', $user->dataPribadi->jenis_kelamin ?? '') === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                     </select>
+                    @error('jenis_kelamin')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Pendidikan Terakhir -->
+                <div>
+                    <label for="pendidikan_terakhir" class="block text-sm font-medium text-gray-700 mb-2">
+                        Pendidikan Terakhir <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" 
+                           id="pendidikan_terakhir" 
+                           name="pendidikan_terakhir" 
+                           value="{{ old('pendidikan_terakhir', $user->dataPribadi->pendidikan_terakhir ?? '') }}"
+                           required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('pendidikan_terakhir') border-red-500 @enderror">
+                    @error('pendidikan_terakhir')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Jurusan -->
+                <div>
+                    <label for="jurusan" class="block text-sm font-medium text-gray-700 mb-2">Jurusan</label>
+                    <input type="text" 
+                           id="jurusan" 
+                           name="jurusan" 
+                           value="{{ old('jurusan', $user->dataPribadi->jurusan ?? '') }}"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('jurusan') border-red-500 @enderror">
+                    @error('jurusan')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Gaji -->
+                <div>
+                    <label for="gaji" class="block text-sm font-medium text-gray-700 mb-2">Gaji</label>
+                    <input type="number" 
+                           id="gaji" 
+                           name="gaji" 
+                           value="{{ old('gaji', $user->dataPribadi->gaji ?? '') }}"
+                           step="0.01"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('gaji') border-red-500 @enderror">
+                    @error('gaji')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- TMT Kerja -->
+                <div>
+                    <label for="tmt_kerja" class="block text-sm font-medium text-gray-700 mb-2">
+                        TMT Kerja (Tanggal Mulai Tugas) <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" 
+                           id="tmt_kerja" 
+                           name="tmt_kerja" 
+                           value="{{ old('tmt_kerja', $user->dataPribadi->tmt_kerja ?? '') }}"
+                           required
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tmt_kerja') border-red-500 @enderror">
+                    @error('tmt_kerja')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Alamat Domisili -->
+                <div class="md:col-span-2">
+                    <label for="alamat_domisili" class="block text-sm font-medium text-gray-700 mb-2">
+                        Alamat Domisili <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="alamat_domisili" 
+                              name="alamat_domisili" 
+                              rows="3"
+                              required
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('alamat_domisili') border-red-500 @enderror">{{ old('alamat_domisili', $user->dataPribadi->alamat_domisili ?? '') }}</textarea>
+                    @error('alamat_domisili')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- No HP -->
                 <div>
-                    <label for="no_hp" class="block text-sm font-medium text-gray-700 mb-2">No. HP</label>
+                    <label for="no_hp" class="block text-sm font-medium text-gray-700 mb-2">
+                        No. HP <span class="text-red-500">*</span>
+                    </label>
                     <input type="text" 
                            id="no_hp" 
                            name="no_hp" 
                            value="{{ old('no_hp', $user->dataPribadi->no_hp ?? '') }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                           required
+                           maxlength="15"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('no_hp') border-red-500 @enderror">
+                    @error('no_hp')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <!-- Alamat -->
+                <!-- Riwayat Diklat -->
                 <div class="md:col-span-2">
-                    <label for="alamat" class="block text-sm font-medium text-gray-700 mb-2">Alamat</label>
-                    <textarea id="alamat" 
-                              name="alamat" 
-                              rows="3" 
-                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ old('alamat', $user->dataPribadi->alamat ?? '') }}</textarea>
+                    <label for="riwayat_diklat" class="block text-sm font-medium text-gray-700 mb-2">
+                        Riwayat Diklat (JSON Format)
+                    </label>
+                    <textarea id="riwayat_diklat" 
+                              name="riwayat_diklat" 
+                              rows="3"
+                              placeholder='Contoh: [{"tahun": "2020", "nama": "Diklat Pendidikan"}]'
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('riwayat_diklat') border-red-500 @enderror">{{ old('riwayat_diklat', $user->dataPribadi->riwayat_diklat ?? '') }}</textarea>
+                    @error('riwayat_diklat')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <!-- NUPTK -->
-                <div>
-                    <label for="nuptk" class="block text-sm font-medium text-gray-700 mb-2">NUPTK</label>
+                <!-- Foto Profil -->
+                <div class="md:col-span-2">
+                    <label for="foto_profil" class="block text-sm font-medium text-gray-700 mb-2">Foto Profil (Path)</label>
                     <input type="text" 
-                           id="nuptk" 
-                           name="nuptk" 
-                           value="{{ old('nuptk', $user->dataPribadi->nuptk ?? '') }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-
-                <!-- NRG -->
-                <div>
-                    <label for="nrg" class="block text-sm font-medium text-gray-700 mb-2">NRG</label>
-                    <input type="text" 
-                           id="nrg" 
-                           name="nrg" 
-                           value="{{ old('nrg', $user->dataPribadi->nrg ?? '') }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-
-                <!-- NIY/NIGK -->
-                <div>
-                    <label for="niy_nigk" class="block text-sm font-medium text-gray-700 mb-2">NIY/NIGK</label>
-                    <input type="text" 
-                           id="niy_nigk" 
-                           name="niy_nigk" 
-                           value="{{ old('niy_nigk', $user->dataPribadi->niy_nigk ?? '') }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-
-                <!-- KTA Lama -->
-                <div>
-                    <label for="kta_lama" class="block text-sm font-medium text-gray-700 mb-2">KTA Lama</label>
-                    <input type="text" 
-                           id="kta_lama" 
-                           name="kta_lama" 
-                           value="{{ old('kta_lama', $user->dataPribadi->kta_lama ?? '') }}"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                           id="foto_profil" 
+                           name="foto_profil" 
+                           value="{{ old('foto_profil', $user->dataPribadi->foto_profil ?? '') }}"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('foto_profil') border-red-500 @enderror">
+                    @error('foto_profil')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
         </div>
