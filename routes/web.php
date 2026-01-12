@@ -35,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/lembaga', [ProfileController::class, 'showLembaga'])->name('profile.lembaga');
     Route::patch('/profile/data-pribadi', [ProfileController::class, 'updateDataPribadi'])->name('profile.data-pribadi.update');
     Route::patch('/profile/data-lembaga', [ProfileController::class, 'updateDataLembaga'])->name('profile.data-lembaga.update');
+
+    // Cetak KTA (PDF)
+    Route::get('/cetak-kta', [\App\Http\Controllers\KtaController::class, 'cetak'])->name('cetak-kta');
+    Route::get('/download-kta', [\App\Http\Controllers\KtaController::class, 'download'])->name('download-kta');
 });
 
 // Galeri Routes (Public)

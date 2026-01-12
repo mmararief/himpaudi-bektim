@@ -53,6 +53,8 @@ class RegisteredUserController extends Controller
             // Data Lembaga
             'nama_lembaga' => ['required', 'string', 'max:255'],
             'npsn' => ['required', 'string', 'max:8'],
+            'jabatan' => ['nullable', 'string', 'max:100'],
+            'kelurahan' => ['nullable', 'in:Aren Jaya,Bekasi Jaya,Duren Jaya,Margahayu'],
         ]);
 
         // Create User Account
@@ -97,6 +99,8 @@ class RegisteredUserController extends Controller
         $user->dataLembaga()->create([
             'nama_lembaga' => $validated['nama_lembaga'],
             'npsn' => $validated['npsn'],
+            'jabatan' => $validated['jabatan'] ?? null,
+            'kelurahan' => $validated['kelurahan'] ?? null,
         ]);
 
         event(new Registered($user));

@@ -102,8 +102,47 @@
             $dataLembaga = $user->dataLembaga;
         @endphp
 
+        <!-- Print Styles -->
+        <style>
+            @media print {
+                /* Hide everything by default */
+                body * {
+                    visibility: hidden;
+                }
+                
+                /* Show only KTA card */
+                #kta-card, #kta-card * {
+                    visibility: visible;
+                }
+                
+                #kta-card {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 400px !important;
+                    max-width: 400px !important;
+                    margin: 0 !important;
+                    box-shadow: none !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                    color-adjust: exact !important;
+                }
+
+                /* Hide navigation, sidebar, other sections */
+                nav, aside, .no-print, .print\\:hidden {
+                    display: none !important;
+                }
+
+                @page {
+                    size: A4 landscape;
+                    margin: 0;
+                }
+            }
+        </style>
+
         <!-- Breadcrumb -->
-        <nav class="mb-6">
+        <nav class="mb-6 print:hidden">
             <ol class="flex items-center space-x-2 text-sm">
                 <li class="flex items-center">
                     <span class="font-semibold text-blue-600">Dashboard</span>
@@ -112,24 +151,28 @@
         </nav>
 
         <!-- Page Header -->
-        <div class="mb-8">
+        <div class="mb-8 print:hidden">
             <div class="flex justify-between items-start">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Dashboard Akun Situs</h2>
                     <p class="text-gray-600 mt-1">Selamat datang, <span class="font-semibold">{{ $dataPribadi->nama_lengkap ?? $user->username }}</span></p>
                 </div>
-                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    Cetak KTA
-                </button>
+                <div class="flex gap-2">
+                    <a href="{{ route('cetak-kta') }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        Lihat KTA
+                    </a>
+                    <a href="{{ route('download-kta') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download PDF
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Main Content (left 2/3) -->
-            <div class="lg:col-span-2 space-y-6">
+        <div class="space-y-6">
                 <!-- Digital KTA Card -->
-                <div class="rounded-2xl p-6 shadow-lg relative overflow-hidden kta-pattern" style="background: linear-gradient(to bottom right, #1e40af, #2563eb); color: #ffffff;">
+                <div id="kta-card" class="rounded-2xl p-6 shadow-lg relative overflow-hidden kta-pattern" style="background: linear-gradient(to bottom right, #1e40af, #2563eb); color: #ffffff;">
                     <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
                     
                     <div class="flex justify-between items-start mb-6 relative z-10">
@@ -168,17 +211,27 @@
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <p class="text-xs uppercase font-medium" style="color: rgba(255, 255, 255, 0.8);">NIPTK / NUPTK</p>
-                                    <p class="font-medium font-mono" style="color: #ffffff;">{{ $dataPribadi->niptk_nuptk ?? '-' }}</p>
+                                    <p class="text-xs uppercase font-medium" style="color: rgba(255, 255, 255, 0.8);">No Anggota</p>
+                                    <p class="font-medium font-mono" style="color: #ffffff;">HMP-{{ str_pad($user->id, 5, '0', STR_PAD_LEFT) }}</p>
                                 </div>
                                 <div>
                                     <p class="text-xs uppercase font-medium" style="color: rgba(255, 255, 255, 0.8);">Wilayah</p>
                                     <p class="font-medium" style="color: #ffffff;">Bekasi Timur</p>
                                 </div>
                             </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-xs uppercase font-medium" style="color: rgba(255, 255, 255, 0.8);">Unit Kerja</p>
+                                    <p class="font-medium" style="color: #ffffff;">{{ $dataLembaga->nama_lembaga ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs uppercase font-medium" style="color: rgba(255, 255, 255, 0.8);">Jabatan</p>
+                                    <p class="font-medium" style="color: #ffffff;">{{ $dataLembaga->jabatan ?? '-' }}</p>
+                                </div>
+                            </div>
                             <div>
-                                <p class="text-xs uppercase font-medium" style="color: rgba(255, 255, 255, 0.8);">Unit Kerja</p>
-                                <p class="font-medium" style="color: #ffffff;">{{ $dataLembaga->nama_lembaga ?? '-' }}</p>
+                                <p class="text-xs uppercase font-medium" style="color: rgba(255, 255, 255, 0.8);">Kelurahan</p>
+                                <p class="font-medium" style="color: #ffffff;">{{ $dataLembaga->kelurahan ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
@@ -191,7 +244,7 @@
 
                 <!-- Status Card (conditional) -->
                 @if($user->status === 'pending')
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-5">
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-5 print:hidden">
                         <div class="flex items-start gap-3">
                             <div class="flex-shrink-0 mt-0.5">
                                 <svg class="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
@@ -205,7 +258,7 @@
                         </div>
                     </div>
                 @elseif($user->status === 'rejected')
-                    <div class="bg-red-50 border border-red-200 rounded-lg p-5">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-5 print:hidden">
                         <div class="flex items-start gap-3">
                             <div class="flex-shrink-0 mt-0.5">
                                 <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
@@ -220,88 +273,91 @@
                     </div>
                 @endif
 
-                <!-- Info Terbaru Section (Dynamic from Berita) -->
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <!-- Data Pribadi Section -->
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden print:hidden">
                     <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
                         <h3 class="font-bold text-gray-900 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
-                            Informasi Terbaru
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            Data Pribadi
                         </h3>
                     </div>
                     <div class="p-6">
-                        @if(isset($latestBerita) && $latestBerita->count() > 0)
-                            <div class="space-y-4">
-                                @foreach($latestBerita as $item)
-                                    <a href="{{ route('berita.show', $item->slug) }}" class="block group">
-                                        <div class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                                            <div class="w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden bg-gray-200">
-                                                @if($item->thumbnail)
-                                                    <img src="{{ asset('storage/'.$item->thumbnail) }}" alt="{{ $item->judul }}" class="w-full h-full object-cover">
-                                                @else
-                                                    <div class="w-full h-full bg-gradient-to-br from-blue-400 to-indigo-600"></div>
-                                                @endif
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <h4 class="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition line-clamp-2">{{ $item->judul }}</h4>
-                                                <p class="text-xs text-gray-500 mt-1">{{ optional($item->published_at)->format('d M Y') }} • {{ $item->user->name ?? $item->user->username ?? 'Admin' }}</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    @if(!$loop->last)
-                                        <hr class="border-gray-200">
-                                    @endif
-                                @endforeach
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Nama Lengkap</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataPribadi->nama_lengkap ?? '-' }}</p>
                             </div>
-                        @else
-                            <div class="py-10 text-center text-sm text-gray-500">
-                                <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                                Belum ada berita dipublikasikan
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">No. KTP</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataPribadi->no_ktp ?? '-' }}</p>
                             </div>
-                        @endif
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Tempat, Tanggal Lahir</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataPribadi->tempat_lahir ?? '-' }}, {{ $dataPribadi->tanggal_lahir ? $dataPribadi->tanggal_lahir->format('d M Y') : '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Jenis Kelamin</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataPribadi->jenis_kelamin ?? '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Pendidikan Terakhir</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataPribadi->pendidikan_terakhir ?? '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">TMT Kerja</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataPribadi->tmt_kerja ? $dataPribadi->tmt_kerja->format('d M Y') : '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">No. HP</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataPribadi->no_hp ?? '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Email</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $user->email ?? '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Alamat Domisili</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataPribadi->alamat_domisili ?? '-' }}</p>
+                            </div>
+                        </div>
                         <div class="mt-4 pt-4 border-t border-gray-200">
-                            <a href="{{ route('berita.index') }}" class="block text-center text-sm text-blue-600 font-medium hover:text-blue-700 transition-colors">Lihat Semua Berita →</a>
+                            <a href="{{ route('profile.edit') }}" class="block text-center text-sm text-blue-600 font-medium hover:text-blue-700 transition-colors">Edit Data Pribadi →</a>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Sidebar (right 1/3) -->
-            <div class="space-y-6">
-                <!-- Profile Completion Widget removed per request -->
-
-                <!-- Hot Discussions Widget -->
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="px-5 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
-                        <h4 class="text-sm font-bold text-gray-900">Diskusi Terhangat</h4>
-                        <a href="{{ route('forum.index') }}" class="text-xs text-blue-600 hover:text-blue-700 font-medium transition-colors">Lihat Forum →</a>
+                <!-- Data Lembaga Section -->
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden print:hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                        <h3 class="font-bold text-gray-900 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                            Data Lembaga
+                        </h3>
                     </div>
-                    <div class="p-5">
-                        <ul class="space-y-3">
-                            @forelse(\App\Models\ForumTopik::withCount('balasan')->orderBy('balasan_count', 'desc')->take(2)->get() as $topik)
-                                <li class="pb-3 border-b border-gray-200 last:border-0 last:pb-0">
-                                    <a href="{{ route('forum.show', $topik->slug) }}" class="block hover:bg-gray-50 -mx-2 p-2 rounded-lg transition-colors">
-                                        <span class="inline-block px-2 py-0.5 rounded text-xs font-medium text-blue-700 bg-blue-100 border border-blue-200 mb-2">{{ $topik->kategori }}</span>
-                                        <p class="text-sm font-medium text-gray-900 line-clamp-2 mb-2">{{ $topik->judul }}</p>
-                                        <div class="flex items-center gap-2 text-xs text-gray-500">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                            </svg>
-                                            <span>{{ $topik->balasan_count }} Tanggapan</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            @empty
-                                <li class="text-sm text-gray-500 text-center py-6">
-                                    <svg class="w-12 h-12 mx-auto text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                    </svg>
-                                    <p>Belum ada diskusi tersedia</p>
-                                </li>
-                            @endforelse
-                        </ul>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Nama Lembaga</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataLembaga->nama_lembaga ?? '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">NPSN</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataLembaga->npsn ?? '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Jabatan</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataLembaga->jabatan ?? '-' }}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Kelurahan</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $dataLembaga->kelurahan ?? '-' }}</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <a href="{{ route('profile.lembaga') }}" class="block text-center text-sm text-blue-600 font-medium hover:text-blue-700 transition-colors">Lihat Data Lembaga →</a>
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
     </x-member-layout>
 @endif

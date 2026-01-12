@@ -194,6 +194,24 @@
                     <x-input-error :messages="$errors->get('npsn')" class="mt-2" />
                     <p class="text-xs text-gray-500 mt-1">NPSN dapat sama untuk anggota dari lembaga yang sama</p>
                 </div>
+
+                <div>
+                    <x-input-label for="jabatan" value="Jabatan" />
+                    <x-text-input id="jabatan" class="block mt-1 w-full" type="text" name="jabatan" :value="old('jabatan')" placeholder="Contoh: Guru, Kepala Sekolah" />
+                    <x-input-error :messages="$errors->get('jabatan')" class="mt-2" />
+                </div>
+
+                <div>
+                    <x-input-label for="kelurahan" value="Kelurahan" />
+                    <select id="kelurahan" name="kelurahan" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <option value="">Pilih Kelurahan</option>
+                        <option value="Aren Jaya" {{ old('kelurahan') == 'Aren Jaya' ? 'selected' : '' }}>Aren Jaya</option>
+                        <option value="Bekasi Jaya" {{ old('kelurahan') == 'Bekasi Jaya' ? 'selected' : '' }}>Bekasi Jaya</option>
+                        <option value="Duren Jaya" {{ old('kelurahan') == 'Duren Jaya' ? 'selected' : '' }}>Duren Jaya</option>
+                        <option value="Margahayu" {{ old('kelurahan') == 'Margahayu' ? 'selected' : '' }}>Margahayu</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('kelurahan')" class="mt-2" />
+                </div>
             </div>
         </div>
 

@@ -13,6 +13,8 @@ class DataLembaga extends Model
         'npsn',
         'nama_lembaga',
         'lembaga_master_id',
+        'jabatan',
+        'kelurahan',
     ];
 
     /**

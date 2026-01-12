@@ -33,6 +33,8 @@ class DataLembagaUpdateRequest extends FormRequest
                 'max:8',
             ],
             'nama_lembaga' => ['required', 'string', 'max:255'],
+            'jabatan' => ['nullable', 'string', 'max:100'],
+            'kelurahan' => ['nullable', 'in:Aren Jaya,Bekasi Jaya,Duren Jaya,Margahayu'],
         ];
     }
 }
