@@ -84,14 +84,14 @@
     <nav class="bg-blue-900 border-b border-blue-800 fixed w-full z-30 top-0">
         <div class="px-6 py-3">
             <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-4">
                        <img src="{{ asset('images/logo-himpaudi.png') }}" alt="Logo HIMPAUDI" class="h-10 w-auto">
                     <div>
                         <h1 class="text-white font-semibold text-lg leading-tight">HIMPAUDI</h1>
                         <p class="text-blue-200 text-xs">Anggota - Bekasi Timur</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
                 @php
                     $user = Auth::user();
                     $dataPribadi = $user->dataPribadi ?? null;

@@ -113,9 +113,9 @@
                             <h3 class="text-white font-bold mb-4">Menu Cepat</h3>
                             <ul class="space-y-2 text-sm">
                                 <li><a href="{{ route('register') }}" class="hover:text-blue-400 transition">Daftar Akun Situs</a></li>
-                                <li><a href="{{ route('anggota.himpaudi') }}" target="_blank" rel="noopener" class="hover:text-blue-400 transition">Anggota Resmi HIMPAUDI</a></li>
+                                <li><a href="{{ route('anggota.himpaudi') }}" target="_blank" rel="noopener" class="hover:text-blue-400 transition">Website Resmi Himpaudi</a></li>
                                 <li><a href="{{ route('login') }}" class="hover:text-blue-400 transition">Login</a></li>
-                                <li><a href="{{ route('galeri.index') }}" class="hover:text-blue-400 transition">Galeri</a></li>
+                                <li><a href="{{ route('berita.index') }}" class="hover:text-blue-400 transition">Berita</a></li>
                                 <li><a href="{{ route('forum.index') }}" class="hover:text-blue-400 transition">Forum</a></li>
                             </ul>
                         </div>

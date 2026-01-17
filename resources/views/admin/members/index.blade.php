@@ -80,20 +80,20 @@
                                         {{ $member->created_at->format('d M Y') }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <a href="{{ route('admin.members.show', $member) }}" 
-                                       class="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
-                                        Lihat Detail
-                                    </a>
-                                    <form action="{{ route('admin.members.destroy', $member) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="text-red-600 hover:text-red-800 text-sm font-medium"
-                                                onclick="return confirm('Hapus anggota ini?')">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <a href="{{ route('admin.members.show', $member) }}" 
+                                           class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
+                                            Lihat Detail
+                                        </a>
+                                        <form action="{{ route('admin.members.destroy', $member) }}" method="POST" class="inline" onsubmit="return confirm('Hapus anggota ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="px-3 py-1 text-sm bg-red-600 text-white rounded">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

@@ -47,13 +47,15 @@
                             @endif
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-700">{{ optional($item->published_at)->format('d M Y H:i') ?? '-' }}</td>
-                        <td class="px-4 py-3 text-right space-x-2">
-                            <a href="{{ route('admin.berita.edit', $item) }}" class="text-blue-600 hover:underline text-sm">Edit</a>
-                            <form action="{{ route('admin.berita.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Hapus berita ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:underline text-sm">Hapus</button>
-                            </form>
+                        <td class="px-4 py-3 text-right">
+                            <div class="flex justify-end gap-2">
+                                <a href="{{ route('admin.berita.edit', $item) }}" class="px-3 py-1 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600">Edit</a>
+                                <form action="{{ route('admin.berita.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Hapus berita ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">Hapus</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty

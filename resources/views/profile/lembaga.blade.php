@@ -1,5 +1,5 @@
 <x-member-layout>
-    <x-slot name="title">Data Sekolah</x-slot>
+    <x-slot name="title">Data Lembaga PAUD</x-slot>
 
     <div class="max-w-7xl mx-auto">
         <div class="px-4 sm:px-6 lg:px-8 py-8">
@@ -8,7 +8,7 @@
                 <ol class="flex items-center space-x-2 text-sm">
                     <li><a href="{{ route('dashboard') }}" class="text-blue-600 hover:text-blue-800">Dashboard</a></li>
                     <li class="text-gray-400">/</li>
-                    <li class="text-gray-600 font-medium">Data Sekolah</li>
+                    <li class="text-gray-600 font-medium">Data Lembaga PAUD</li>
                 </ol>
             </nav>
 
@@ -16,8 +16,8 @@
             <div class="mb-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-8 text-white shadow-lg">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <h2 class="text-3xl font-bold mb-2">Data Sekolah/Lembaga PAUD</h2>
-                        <p class="text-blue-100">Informasi lengkap sekolah/lembaga Anda</p>
+                        <h2 class="text-3xl font-bold mb-2">Data Lembaga PAUD</h2>
+                        <p class="text-blue-100">Informasi lengkap lembaga PAUD Anda</p>
                     </div>
                     <a href="{{ route('profile.edit') }}" class="bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-md flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,7 +85,7 @@
                                 @if($lembagaMaster->nama_kepala_sekolah)
                                 <div class="flex items-start gap-3">
                                     <div class="flex-shrink-0 w-40">
-                                        <span class="text-sm font-medium text-gray-500">Kepala Sekolah</span>
+                                        <span class="text-sm font-medium text-gray-500">Kepala Lembaga</span>
                                     </div>
                                     <div class="flex-1"><span class="text-sm text-gray-900 font-medium">{{ $lembagaMaster->nama_kepala_sekolah }}</span></div>
                                 </div>
@@ -114,10 +114,10 @@
                                 @if($lembagaMaster->foto_sekolah)
                                 <div class="flex items-start gap-3">
                                     <div class="flex-shrink-0 w-40">
-                                        <span class="text-sm font-medium text-gray-500">Foto Sekolah</span>
+                                        <span class="text-sm font-medium text-gray-500">Foto Lembaga</span>
                                     </div>
                                     <div class="flex-1">
-                                        <img src="{{ asset('storage/'.$lembagaMaster->foto_sekolah) }}" alt="Foto Sekolah" class="w-48 h-32 object-cover rounded-lg border">
+                                        <img src="{{ asset('storage/'.$lembagaMaster->foto_sekolah) }}" alt="Foto Lembaga" class="w-48 h-32 object-cover rounded-lg border">
                                     </div>
                                 </div>
                                 @endif
@@ -142,13 +142,13 @@
                 <svg class="w-16 h-16 text-yellow-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                 </svg>
-                <h3 class="text-lg font-semibold text-yellow-800 mb-2">Data Sekolah Belum Tersedia</h3>
-                <p class="text-yellow-700 mb-4">Silakan lengkapi data sekolah Anda terlebih dahulu.</p>
+                <h3 class="text-lg font-semibold text-yellow-800 mb-2">Data Lembaga PAUD Belum Tersedia</h3>
+                <p class="text-yellow-700 mb-4">Silakan lengkapi data lembaga PAUD Anda terlebih dahulu.</p>
                 <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                     </svg>
-                    Lengkapi Data Sekolah
+                    Lengkapi Data Lembaga
                 </a>
             </div>
             @endif

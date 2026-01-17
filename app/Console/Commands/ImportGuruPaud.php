@@ -21,7 +21,7 @@ class ImportGuruPaud extends Command
     private $skipped = 0;
     private $updated = 0;
     private $errors = [];
-    
+
     // Untuk carry forward data lembaga
     private $currentLembaga = '';
     private $currentAlamatLembaga = '';
@@ -95,7 +95,7 @@ class ImportGuruPaud extends Command
         $rowNumber = 3;
         while (($row = fgetcsv($handle)) !== false) {
             $rowNumber++;
-            
+
             // Skip empty rows
             if (empty($row[0]) || empty($row[1]) || !is_numeric(trim($row[0]))) {
                 continue;
@@ -129,7 +129,7 @@ class ImportGuruPaud extends Command
         // 10: Kompetensi yang ingin dimiliki
 
         $namaLengkap = trim($row[1] ?? '');
-        
+
         if (empty($namaLengkap)) {
             $this->skipped++;
             return;
@@ -142,7 +142,7 @@ class ImportGuruPaud extends Command
         $noKta = $this->cleanNoKta(trim($row[3] ?? ''));
         $namaLembaga = trim($row[4] ?? '');
         $alamatLembaga = trim($row[5] ?? '');
-        
+
         // Carry forward: jika nama lembaga kosong, gunakan lembaga sebelumnya
         if (!empty($namaLembaga)) {
             $this->currentLembaga = $namaLembaga;
@@ -154,7 +154,7 @@ class ImportGuruPaud extends Command
                 $alamatLembaga = $this->currentAlamatLembaga;
             }
         }
-        
+
         $kecamatan = trim($row[6] ?? 'Bekasi Timur');
         $lamaMengajar = $this->parseLamaMengajar(trim($row[7] ?? ''));
         $pendidikanTerakhir = trim($row[8] ?? '');
@@ -166,9 +166,19 @@ class ImportGuruPaud extends Command
         $email = $username . '@himpaudi-bektim.local';
 
         DB::transaction(function () use (
-            $namaLengkap, $tempatLahir, $tanggalLahir, $noKta, $namaLembaga,
-            $alamatLembaga, $kecamatan, $lamaMengajar, $pendidikanTerakhir,
-            $pelatihan, $kompetensi, $username, $email
+            $namaLengkap,
+            $tempatLahir,
+            $tanggalLahir,
+            $noKta,
+            $namaLembaga,
+            $alamatLembaga,
+            $kecamatan,
+            $lamaMengajar,
+            $pendidikanTerakhir,
+            $pelatihan,
+            $kompetensi,
+            $username,
+            $email
         ) {
             // Cek apakah user sudah ada berdasarkan nama
             $existingUser = User::whereHas('dataPribadi', function ($q) use ($namaLengkap) {
@@ -252,7 +262,7 @@ class ImportGuruPaud extends Command
 
         // Cek apakah user sudah punya data lembaga
         $existingDataLembaga = DataLembaga::where('user_id', $user->id)->first();
-        
+
         if ($existingDataLembaga) {
             // Update data lembaga yang sudah ada
             $existingDataLembaga->update([
@@ -285,7 +295,7 @@ class ImportGuruPaud extends Command
 
         // Format: "Tempat, Tanggal" atau "Tempat/Tanggal"
         $parts = preg_split('/[,\/]/', $value, 2);
-        
+
         if (count($parts) >= 1) {
             $tempatLahir = trim($parts[0]);
         }
@@ -307,20 +317,30 @@ class ImportGuruPaud extends Command
 
         // Mapping bulan Indonesia ke angka
         $bulanMapping = [
-            'januari' => 1, 'februari' => 2, 'maret' => 3, 'april' => 4,
-            'mei' => 5, 'mey' => 5, 'juni' => 6, 'juli' => 7, 'agustus' => 8,
-            'september' => 9, 'oktober' => 10, 'november' => 11, 'nopember' => 11, 
+            'januari' => 1,
+            'februari' => 2,
+            'maret' => 3,
+            'april' => 4,
+            'mei' => 5,
+            'mey' => 5,
+            'juni' => 6,
+            'juli' => 7,
+            'agustus' => 8,
+            'september' => 9,
+            'oktober' => 10,
+            'november' => 11,
+            'nopember' => 11,
             'desember' => 12
         ];
 
         // Try format: "DD Bulan YYYY" atau "DD-MM-YYYY" atau "DD/MM/YYYY"
-        
+
         // Format: "5 Oktober 1955"
         if (preg_match('/(\d{1,2})\s+(\w+)\s+(\d{4})/i', $dateStr, $matches)) {
             $day = (int)$matches[1];
             $monthName = strtolower($matches[2]);
             $year = (int)$matches[3];
-            
+
             if (isset($bulanMapping[$monthName])) {
                 try {
                     return Carbon::create($year, $bulanMapping[$monthName], $day);
@@ -335,7 +355,7 @@ class ImportGuruPaud extends Command
             $day = (int)$matches[1];
             $month = (int)$matches[2];
             $year = (int)$matches[3];
-            
+
             try {
                 return Carbon::create($year, $month, $day);
             } catch (\Exception $e) {
@@ -348,7 +368,7 @@ class ImportGuruPaud extends Command
             $day = (int)$matches[1];
             $monthName = strtolower(trim($matches[2]));
             $year = (int)$matches[3];
-            
+
             if (isset($bulanMapping[$monthName])) {
                 try {
                     return Carbon::create($year, $bulanMapping[$monthName], $day);
@@ -366,7 +386,7 @@ class ImportGuruPaud extends Command
         if (empty($value) || $value === '-' || strtolower($value) === 'belum ada') {
             return null;
         }
-        
+
         // Remove dots and spaces, keep only alphanumeric
         return preg_replace('/[^a-zA-Z0-9]/', '', $value);
     }
@@ -396,10 +416,10 @@ class ImportGuruPaud extends Command
         $nama = preg_replace('/\b(S\.?Pd\.?I?|S\.?H|S\.?E|S\.?Kom|S\.?Si|M\.?M|M\.?Pd|Dra?\.?|Ir\.?|Hj?\.?|A\.?Md\.?|D-?[123]|MMSI)\b/i', '', $nama);
         $nama = preg_replace('/[^a-zA-Z\s]/', '', $nama);
         $nama = trim($nama);
-        
+
         $parts = preg_split('/\s+/', $nama);
         $parts = array_filter($parts);
-        
+
         if (count($parts) === 0) {
             $username = 'user' . time() . rand(100, 999);
         } elseif (count($parts) === 1) {
@@ -413,7 +433,7 @@ class ImportGuruPaud extends Command
         $baseUsername = Str::slug($username, '');
         $username = $baseUsername;
         $counter = 1;
-        
+
         while (User::where('username', $username)->exists()) {
             $username = $baseUsername . $counter;
             $counter++;
@@ -432,11 +452,11 @@ class ImportGuruPaud extends Command
     {
         // Generate unique temp NPSN
         $npsn = 'P' . str_pad(rand(1, 9999999), 7, '0', STR_PAD_LEFT);
-        
+
         while (LembagaMaster::where('npsn', $npsn)->exists()) {
             $npsn = 'P' . str_pad(rand(1, 9999999), 7, '0', STR_PAD_LEFT);
         }
-        
+
         return $npsn;
     }
 
@@ -492,7 +512,7 @@ class ImportGuruPaud extends Command
     private function normalizeKelurahan($alamat)
     {
         $alamat = strtolower($alamat);
-        
+
         $kelurahanMapping = [
             'aren jaya' => 'Aren Jaya',
             'arenjaya' => 'Aren Jaya',
