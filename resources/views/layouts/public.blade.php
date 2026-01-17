@@ -154,9 +154,8 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row items-center justify-between text-sm">
+                    <div class="border-t border-gray-800 mt-8 pt-8 text-sm">
                         <div>© {{ date('Y') }} HIMPAUDI Bekasi Timur. All rights reserved.</div>
-                        <div class="text-gray-500 mt-2 md:mt-0">Dibangun dengan ❤️ menggunakan Laravel & Tailwind CSS</div>
                     </div>
                 </div>
             </footer>

@@ -157,6 +157,7 @@
                     <x-input-label for="no_hp" value="No. HP/WhatsApp *" />
                     <x-text-input id="no_hp" class="block mt-1 w-full" type="text" name="no_hp" :value="old('no_hp', '08')" required maxlength="15" />
                     <x-input-error :messages="$errors->get('no_hp')" class="mt-2" />
+                    <p class="text-xs text-gray-500 mt-1">Dimulai dengan 08</p>
                 </div>
 
                 <div class="md:col-span-2">
