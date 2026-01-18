@@ -69,37 +69,46 @@
         </div>
     </section>
 
-    <!-- Galeri Kegiatan -->
+    <!-- Berita Terbaru -->
     <section class="bg-gray-50 py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-3">Galeri Kegiatan</h2>
-                <p class="text-gray-600">Dokumentasi kegiatan dan acara HIMPAUDI Bekasi Timur</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-3">Berita Terbaru</h2>
+                <p class="text-gray-600">Informasi dan berita terkini seputar HIMPAUDI Bekasi Timur</p>
             </div>
 
             @php
-            $recentGaleri = \App\Models\Galeri::latest('tanggal_kegiatan')->take(6)->get();
+            $recentBerita = \App\Models\Berita::where('is_published', true)->latest('published_at')->take(6)->get();
             @endphp
 
-            @if($recentGaleri->count() > 0)
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                @foreach($recentGaleri as $galeri)
-                <a href="{{ route('galeri.show', $galeri) }}" class="group relative aspect-square overflow-hidden rounded-lg shadow-sm hover:shadow-lg transition-all duration-300">
-                    <img src="{{ asset('storage/'.$galeri->file_gambar) }}"
-                        alt="{{ $galeri->judul_kegiatan }}"
-                        class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-90">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
-                            <h3 class="font-semibold line-clamp-2">{{ $galeri->judul_kegiatan }}</h3>
-                            <p class="text-sm text-gray-200">{{ $galeri->tanggal_kegiatan->format('d M Y') }}</p>
-                        </div>
+            @if($recentBerita->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                @foreach($recentBerita as $berita)
+                <a href="{{ route('berita.show', $berita->slug) }}" class="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
+                    <div class="aspect-video overflow-hidden">
+                        @if($berita->thumbnail)
+                            <img src="{{ asset('storage/'.$berita->thumbnail) }}"
+                                alt="{{ $berita->judul }}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        @else
+                            <div class="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                                <svg class="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                </svg>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="p-5">
+                        <p class="text-xs text-blue-600 font-medium mb-2">{{ optional($berita->published_at)->format('d M Y') ?? '-' }}</p>
+                        <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">{{ $berita->judul }}</h3>
+                        <p class="text-sm text-gray-500 line-clamp-2">{{ Str::limit(strip_tags($berita->konten), 100) }}</p>
                     </div>
                 </a>
                 @endforeach
             </div>
             <div class="text-center">
-                <a href="{{ route('galeri.index') }}" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
-                    Lihat Semua Galeri
+                <a href="{{ route('berita.index') }}" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                    Lihat Semua Berita
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
@@ -108,25 +117,14 @@
             @else
             <div class="text-center py-12 bg-white rounded-xl border border-gray-200">
                 <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                 </svg>
-                <p class="text-gray-500">Galeri akan segera hadir</p>
+                <p class="text-gray-500">Berita akan segera hadir</p>
             </div>
             @endif
         </div>
     </section>
 
-    <!-- Sejarah -->
-    <section class="bg-gray-50 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-3">Sejarah</h2>
-                <p class="text-gray-600">Sejarah Tentang Himpaudi</p>
-            </div>
-            <div class="p-8 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow text-center">
-                <p class="text-gray-600">HIMPAUDI (Himpunan Pendidik dan Tenaga Kependidikan Anak Usia Dini Indonesia) dideklarasikan pada 31 Agustus 2005 di Batu, Malang. Organisasi ini lahir dari kebutuhan untuk menghimpun, mengembangkan, dan memperjuangkan kesejahteraan pendidik dan tenaga kependidikan anak usia dini di seluruh Indonesia. Deklarasi nasional ini merupakan tindak lanjut dari pertemuan utusan dari seluruh Indonesia.</p>
-            </div>
-    </section>
     <!-- Visi & Misi -->
     <section class="bg-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

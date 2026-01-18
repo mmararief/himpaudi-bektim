@@ -1,6 +1,6 @@
 <x-admin-layout>
     <x-slot name="header">
-        <h2 class="text-2xl font-bold text-gray-800">Lembaga Master</h2>
+        <h2 class="text-2xl font-bold text-gray-800">Data Lembaga</h2>
         <p class="text-gray-500 text-sm mt-1">Kelola data master lembaga (PAUD/TK/KB).</p>
     </x-slot>
 
